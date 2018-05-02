@@ -72,3 +72,6 @@ function combat(){
         console.log(t);
     }
 }
+
+
+
