@@ -14,7 +14,8 @@
 			{
 				effect: "new poison(5)",
 				duration: 5,
-				target: "single"
+				target: "single",
+				scope: 
 			}
 
 		]
