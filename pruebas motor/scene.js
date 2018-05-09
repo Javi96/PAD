@@ -28,6 +28,9 @@ var player;
 var enemy;
 var card1;
 function create(){
+    window.addEventListener('resize', resize);
+    resize();
+    
     player = this.physics.add.sprite(100, 200, "playerSprite").setDisplaySize(200,250).setInteractive;
     enemy = this.physics.add.sprite(700, 200, "enemySprite").setDisplaySize(200,250);
     
@@ -90,4 +93,17 @@ function checkOverlap(A, B){
 
     return Phaser.Geom.Rectangle.intersects(boundsA, boundsB);
 
+}
+
+function resize() {
+    var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
+    var wratio = width / height, ratio = canvas.width / canvas.height;
+ 
+    if (wratio < ratio) {
+        canvas.style.width = width + "px";
+        canvas.style.height = (width / ratio) + "px";
+    } else {
+        canvas.style.width = (height * ratio) + "px";
+        canvas.style.height = height + "px";
+    }
 }
