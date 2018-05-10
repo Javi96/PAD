@@ -182,11 +182,11 @@ function isOn(pointer, elem){
     }
 }
 
-//modificar resize (mantiene ratio, no válido para pantallas alargadas)
 function resize() {
     var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
     var wratio = width / height, ratio = canvas.width / canvas.height;
  
+    //resize con ratio
     if (wratio < ratio) {
         canvas.style.width = width + "px";
         canvas.style.height = (width / ratio) + "px";
@@ -194,6 +194,10 @@ function resize() {
         canvas.style.width = (height * ratio) + "px";
         canvas.style.height = height + "px";
     }
+    
+        //resize sin ratio 
+    /*canvas.style.width = width + "px";
+    canvas.style.height = height + "px";*/
 }
 
 /*function goodEffect(card, player){
