@@ -52,9 +52,6 @@ function create(){
 
     for(i = 0; i < combat.enemies.length; i++){
         enemies[i] = this.add.sprite(1090 + 245 * i, 584, "enemy_" + i);
-        enemies[i].setInteractive();
-
-        this.input.setDraggable(enemies[i])
     }
 
     //
@@ -101,6 +98,7 @@ function create(){
             targets: selectedCard,
             scaleX : 1.6,
             scaleY: 1.6,
+            y: origY,
             ease: 'Sine.easeIn',
             duration: 150,
             delay: 0,
