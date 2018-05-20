@@ -3,7 +3,7 @@ var Combat = function(){
     this.hand = [];
     this.discard = [];
     this.player = new Player({
-        "hp" : 10,
+        "hp" : 100,
         "mana" : 3,
         "block" : 0,
         "strenght" : 0,
@@ -15,7 +15,7 @@ var Combat = function(){
     });
     this.enemies = [new Enemy({
         "name":"wotisdis",
-        "hp" : 10,
+        "hp" : 100,
         "block" : 0,
         "startCombatEffects" : [],
         "startTurnEffects" : [],
@@ -26,15 +26,12 @@ var Combat = function(){
 }
 
 Combat.prototype.action = function(target, card){
+    console.log(card);
     if(card.cost > this.player.mana){
         return false;
     }
-    if(card.type == "attack"){
-        target.receiveAttack(this.player, card.dmg + this.player.strenght);
-    }else if(card.type == "skill"){
-        target.receiveSkill(this.player, card);
-    }else if(card.type == "power"){
-        target.receivePower(this.player, card);
+    if(!card.action(this.player, target, enemies)){
+        return false;
     }
     return true;
     

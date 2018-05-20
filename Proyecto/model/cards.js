@@ -5,7 +5,12 @@ var strike = {
     "dmg": 6,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
-    "effects":[]
+    "effects":[],
+    "action": function(player, target, enemies){
+        player.makeAttack(target, this.dmg);
+        player.mana -= this.cost;
+        return true;
+    }
 }
 
 var clash = {
@@ -14,5 +19,15 @@ var clash = {
     "dmg": 6,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
-    "effects":[]
+    "effects":[],
+    "action": function(player, target, enemies){
+        for(i in combat.hand){
+            if(i.type != "attack"){
+                return false;
+            }
+        }
+        player.makeAttack(player, this.dmg);
+        player.mana -= this.cost;
+        return true;
+    }
 }

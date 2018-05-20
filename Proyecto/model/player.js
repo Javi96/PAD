@@ -18,3 +18,7 @@ Player.prototype.receiveAttack = function(dealer, dmg){
         e.apply(this, dealer);
     }
 }
+
+Player.prototype.makeAttack = function(target, dmg){
+    target.receiveAttack(this, dmg + this.strenght);
+}

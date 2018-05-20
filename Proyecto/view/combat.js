@@ -57,12 +57,15 @@ function create(){
     //
     //  ADICIÓN DE SPRITES
     // 
-    for(i = 0; i < combat.hand.length; i++){
+    /*for(i = 0; i < combat.hand.length; i++){
         hand[i] = this.add.sprite(400 + i*100, 950, combat.hand[i].name).setInteractive().setScale(1.6, 1.6);
         this.input.setDraggable(hand[i]);
         hand[i].modelCard = combat.hand[i];
+    }*/
+    for(i = 0; i < combat.hand.length; i++){
+        hand[i] = showCard({x:400+i*200, y:950}, combat.hand[i], this);
+        hand[i].modelCard = combat.hand[i];
     }
-
     this.input.setTopOnly(true);
 
     //emmiter = new Phaser.EventEmitter();
@@ -128,7 +131,6 @@ function create(){
 
     this.input.on('dragend', function (pointer, gameObject) {
         let target = combat.player;
-        console.log(gameObject.x, gameObject.y);
 
         //effect from selectedCard
         if(isOn(pointer, player)){
@@ -192,12 +194,13 @@ function update ()
             break;
         }
     }
-    if(!alive){
+    if(combat.player.hp <= 0){
+        console.log("El jugador ha perdido");
+        
+    } else if(!alive){
         console.log("el jugador ha ganado")
     }
-    if(combat.player.hp < 0){
-        console.log("El jugador ha perdido");
-    }
+
     /*var length = graphicsPath.length;
 
     graphics.clear();
@@ -279,3 +282,19 @@ function badEffect(card, enemy){
     enemy.setTint(0xff0000);
 }
 */
+
+var fS =12
+function showCard(pos, card, f){
+
+    var bg = f.add.image(0, 0, card.name);
+    var desc = f.add.text(-50, 40, card.descripcion, {fontSize: fS});
+    var name = f.add.text(-20, -95, card.name, {fontSize: fS});
+    var ty = f.add.text(-10, 10, card.type, {fontSize: fS*0.6, color: '#000000'});
+    var cost = f.add.text(-75, -105, card.cost, {fontSize: fS*1.5, fontStyle: 'bold'});
+
+    var carta = f.add.container(pos.x, pos.y, [ bg, desc, name, ty , cost]);
+    //ZONA EN LA QUE SE INTERACTUA CON EL CONTAINER
+    carta.setInteractive(new Phaser.Geom.Rectangle(-bg.width/2, -bg.height/2, bg.width, bg.height), Phaser.Geom.Rectangle.Contains);
+    f.input.setDraggable(carta);
+    return carta;
+}
