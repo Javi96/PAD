@@ -56,3 +56,8 @@ Combat.prototype.startTurn = function(){
         this.hand.push(card);
     }
 }
+
+Combat.prototype.endTurn = function(){
+    for(eff of this.player.endTurnEffects)
+            eff.apply();
+}

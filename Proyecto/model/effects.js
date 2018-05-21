@@ -1,4 +1,5 @@
 var returnDmgEffect = function(dmg){
+    this.name = "returnDmg"
     this.duration = 3;
     this.dmg = dmg;
 }

@@ -36,6 +36,13 @@ function preload(){
         this.load.image(c.name, "view/img/cards/" + c.name + ".png");
     }
 
+    this.load.image("endTurn", "view/img/assets/endTurn.png");
+    this.load.image("discard", "view/img/assets/descartes.png");
+    this.load.image("energy", "view/img/assets/Red_energy.png");
+    this.load.image("deck", "view/img/assets/deck.png");
+
+
+
     combat.startTurn();
 }
 
@@ -47,11 +54,37 @@ function create(){
     resize();
     //this.add.image(1920/2, 1080/2, "bg");
 
-    player = this.add.sprite(495, 615, "player").setDisplaySize(100,175);
+    var endTurn = this.add.image(1630, 860,"endTurn").setInteractive();
+
+    endTurn.isSpecial = true;
+
+    endTurn.gameObjectDown = function(foo1){
+        combat.endTurn();
+    }
+
+    var discardDeck = this.add.image(1850, 1000,"discard").setInteractive();
+
+    discardDeck.isSpecial = true;
+
+    discardDeck.gameObjectDown = function(foo1){
+        console.log("mostrar cartas de descarte")
+    }
+
+    var mainDeck = this.add.image(80, 1000,"deck").setInteractive();
+
+    mainDeck.isSpecial = true;
+
+    mainDeck.gameObjectDown = function(foo1){
+        console.log("mostrar cartas del deck")
+    }
+
+    var energy = this.add.image(190, 890,"energy");
+
+    player = this.add.sprite(300, 450, "player").setScale(0.7 , 0.7);
     player.model = combat.player;
 
     for(i = 0; i < combat.enemies.length; i++){
-        enemies[i] = this.add.sprite(1090 + 245 * i, 584, "enemy_" + i);
+        enemies[i] = this.add.sprite(1500 + 245 * i, 450, "enemy_" + i);
     }
 
     //
@@ -63,7 +96,7 @@ function create(){
         hand[i].modelCard = combat.hand[i];
     }*/
     for(i = 0; i < combat.hand.length; i++){
-        hand[i] = showCard({x:400+i*200, y:950}, combat.hand[i], this);
+        hand[i] = showCard({x:400+i*200, y:950}, combat.hand[i], this).setScale(1.6);
         hand[i].modelCard = combat.hand[i];
     }
     this.input.setTopOnly(true);
@@ -82,31 +115,43 @@ function create(){
     
     var tweens = this.tweens;
     this.input.on("gameobjectdown", function(pointer, gameObject){
-        selectedCard = gameObject;
-        origX = selectedCard.x;
-        origY = selectedCard.y;
-        tweens.add({
-            targets: selectedCard,
-            scaleX : 2.5,
-            scaleY: 2.5,
-            y: selectedCard.y - 160,
-            ease: 'Sine.easeOut',
-            duration: 150,
-            delay: 0,
+        if(gameObject.isSpecial){
+            if(gameObject.gameObjectDown)
+                gameObject.gameObjectDown(pointer)
+        }
+        else{
+            selectedCard = gameObject;
+            origX = selectedCard.x;
+            origY = selectedCard.y;
+            tweens.add({
+                targets: selectedCard,
+                scaleX : 2.5,
+                scaleY: 2.5,
+                y: selectedCard.y - 160,
+                ease: 'Sine.easeOut',
+                duration: 150,
+                delay: 0,
 
-        });
+            });
+        }
     })
     this.input.on("gameobjectup", function(pointer, gameObject){
-        tweens.add({
-            targets: selectedCard,
-            scaleX : 1.6,
-            scaleY: 1.6,
-            y: origY,
-            ease: 'Sine.easeIn',
-            duration: 150,
-            delay: 0,
-        });
-        selectedCard = null;
+        if(gameObject.isSpecial){
+            if(gameObject.gameObjectUp)
+                gameObject.gameObjectUp(pointer)
+        }
+        else{
+            tweens.add({
+                targets: selectedCard,
+                scaleX : 1.6,
+                scaleY: 1.6,
+                y: origY,
+                ease: 'Sine.easeIn',
+                duration: 150,
+                delay: 0,
+            });
+            selectedCard = null;
+        }
     })
     this.input.on('dragstart', function (pointer, gameObject) {
        // POR QUÉ NO FUNCIONA???
@@ -154,6 +199,11 @@ function create(){
         }
         //emmiter.emit('cardEffect', selectedCard);
     });
+
+    this.input.on("pointerdown", function(pointer){
+        console.log("x: " + pointer.x);
+        console.log("y: " + pointer.y);
+    }, this)
 
     /*
     //
@@ -287,7 +337,9 @@ var fS =12
 function showCard(pos, card, f){
 
     var bg = f.add.image(0, 0, card.name);
-    var desc = f.add.text(-50, 40, card.descripcion, {fontSize: fS});
+    var desc = f.add.text(-50, 40, function(card){    
+        return card.descripcion;
+    }(card), {fontSize: fS});
     var name = f.add.text(-20, -95, card.name, {fontSize: fS});
     var ty = f.add.text(-10, 10, card.type, {fontSize: fS*0.6, color: '#000000'});
     var cost = f.add.text(-75, -105, card.cost, {fontSize: fS*1.5, fontStyle: 'bold'});
@@ -298,3 +350,4 @@ function showCard(pos, card, f){
     f.input.setDraggable(carta);
     return carta;
 }
+
