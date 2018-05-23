@@ -10,12 +10,16 @@ var Combat = function(){
         "startCombatEffects" : [],
         "startTurnEffects" : [],
         "playCardEffects" : [],
+
         "endTurnEffects" : [new discardHandEffect()],
+
         "receiveAttackEffects" : [],
     });
     this.enemies = [new Enemy({
         "name":"wotisdis",
-        "hp" : 100,
+
+        "hp" : 10,
+
         "block" : 0,
         "startCombatEffects" : [],
         "startTurnEffects" : [],
@@ -32,6 +36,7 @@ Combat.prototype.action = function(target, card){
     if(!card.action(this.player, target, enemies)){
         return false;
     }
+
     return true;
 }
 
@@ -43,6 +48,7 @@ Combat.prototype.startTurn = function(){
     }
     for(eff of this.player.startTurnEffects)
             eff.apply();
+
     this.drawHand(6)
 }
 
@@ -97,4 +103,5 @@ Combat.prototype.suffleDeck = function(){
         this.deck[rnd2] = temp;
     }
     this.discard = [];
+
 }

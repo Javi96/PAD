@@ -85,18 +85,16 @@ function create(){
     this.input.on('dragend', function (pointer, gameObject) {
         gameObject.x = origX;
         gameObject.y = origY;
-        let target;
-        
 
         //effect from selectedCard
         if(isOn(pointer, player)){
-            target = player;
+            console.log("power up");
         }else if(isOn(pointer, enemy)){
-            target = enemy;
+            console.log("attack");
         }else{
-            target = null;
+            console.log("magic");
         }
-        card.
+
         emmiter.emit('cardEffect', selectedCard);
     });
 
@@ -213,3 +211,4 @@ function badEffect(card, enemy){
     enemy.setTint(0xff0000);
 }
 */
+
