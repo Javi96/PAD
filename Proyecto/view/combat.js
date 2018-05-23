@@ -53,13 +53,19 @@ function create(){
     window.addEventListener('resize', resize);
     resize();
     //this.add.image(1920/2, 1080/2, "bg");
-
+    var those = this
     var endTurn = this.add.image(1630, 860,"endTurn").setInteractive();
 
     endTurn.isSpecial = true;
 
     endTurn.gameObjectDown = function(foo1){
         combat.endTurn();
+        for(h of hand){
+            h.destroy();
+        }
+        combat.startTurn();
+        renderHand(those);
+
     }
 
     var discardDeck = this.add.image(1850, 1000,"discard").setInteractive();
@@ -90,19 +96,9 @@ function create(){
     //
     //  ADICIÓN DE SPRITES
     // 
-    /*for(i = 0; i < combat.hand.length; i++){
-        hand[i] = this.add.sprite(400 + i*100, 950, combat.hand[i].name).setInteractive().setScale(1.6, 1.6);
-        this.input.setDraggable(hand[i]);
-        hand[i].modelCard = combat.hand[i];
-    }*/
-    for(i = 0; i < combat.hand.length; i++){
-        hand[i] = showCard({x:400+i*200, y:950}, combat.hand[i], this).setScale(1.6);
-        hand[i].modelCard = combat.hand[i];
-    }
-    this.input.setTopOnly(true);
 
-    //emmiter = new Phaser.EventEmitter();
-    //emmiter.on('cardEffect', cardEffect);
+    renderHand(this);   
+    this.input.setTopOnly(true);
 
     //TWEEN
 
@@ -152,13 +148,8 @@ function create(){
             });
             selectedCard = null;
         }
-    })
+    });
     this.input.on('dragstart', function (pointer, gameObject) {
-       // POR QUÉ NO FUNCIONA???
-        //this.children.bringToTop(gameObject);
-        //gameObject.setVisible(false);
-        
-
         tweens.add({
             targets: selectedCard,
             scaleX : 0,
@@ -175,9 +166,7 @@ function create(){
     });
 
     this.input.on('dragend', function (pointer, gameObject) {
-        let target = combat.player;
-
-        //effect from selectedCard
+        target = combat.player
         if(isOn(pointer, player)){
             target = combat.player;
         }else{
@@ -189,47 +178,18 @@ function create(){
         }
 
         if(!combat.action(target, selectedCard.modelCard)){
-            //gameObject.setVisible(true);
             gameObject.x = origX;
             gameObject.y = origY;
             gameObject.setScale(1.6,1.6);
         }else{
-            combat.deck.push(selectedCard.modelCard);
+            combat.discard.push(selectedCard.modelCard);
             selectedCard.destroy();
         }
-        //emmiter.emit('cardEffect', selectedCard);
     });
 
     this.input.on("pointerdown", function(pointer){
-        console.log("x: " + pointer.x);
-        console.log("y: " + pointer.y);
-    }, this)
-
-    /*
-    //
-    //  GRAPHICS (línea amarilla)
-    //    
-    graphics = this.add.graphics({x: 0, y:0});
-    game.canvas.onmousedown = function (e) {
-        isMouseDown = true;
-        graphics.clear();
-        graphicsPath.length = 0;
-    };
-    game.canvas.onmouseup = function (e) {
-        isMouseDown = false;
-    };
-    game.canvas.onmousemove = function (e) {
-        var mouseX = e.clientX - game.canvas.offsetLeft;
-        var mouseY = e.clientY - game.canvas.offsetTop;
-        if (isMouseDown)
-            graphicsPath.push({x: mouseX, y: mouseY});
-    };*/
-    
-    /*this.input.on('pointermove', function(pointer){
-        if(isOn(pointer, player)){
-            console.log("lo pillo");
-       }
-    });*/
+        
+    }, this);
 }
 
 //
@@ -280,7 +240,7 @@ function update ()
 //
 
 function cardEffect(card, affected){
-    console.log('wololo');
+    //console.log('wololo');
 }
 
 
@@ -333,13 +293,26 @@ function badEffect(card, enemy){
 }
 */
 
+
+function renderHand(f){
+
+    console.log("deck: ");
+    console.log(combat.deck);
+    console.log("discard: ");
+    console.log(combat.discard);
+    console.log("hand: ");
+    console.log(combat.hand);
+    for(i = 0; i < combat.hand.length; i++){
+        hand[i] = showCard({x:400+i*200, y:950}, combat.hand[i], f).setScale(1.6);
+        hand[i].modelCard = combat.hand[i];
+    }
+}
+
 var fS =12
 function showCard(pos, card, f){
 
     var bg = f.add.image(0, 0, card.name);
-    var desc = f.add.text(-50, 40, function(card){    
-        return card.descripcion;
-    }(card), {fontSize: fS});
+    var desc = f.add.text(-50, 40, card.descripcion, {fontSize: fS});
     var name = f.add.text(-20, -95, card.name, {fontSize: fS});
     var ty = f.add.text(-10, 10, card.type, {fontSize: fS*0.6, color: '#000000'});
     var cost = f.add.text(-75, -105, card.cost, {fontSize: fS*1.5, fontStyle: 'bold'});
@@ -351,3 +324,12 @@ function showCard(pos, card, f){
     return carta;
 }
 
+function discardHand(){
+    combat.discardHand();
+}
+
+function drawHand(){
+    combat.drawHand();
+}
+
+console.log('hola"" ');

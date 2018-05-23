@@ -22,3 +22,7 @@ Player.prototype.receiveAttack = function(dealer, dmg){
 Player.prototype.makeAttack = function(target, dmg){
     target.receiveAttack(this, dmg + this.strenght);
 }
+
+Player.prototype.disicardHand = function(keep){
+   
+}
