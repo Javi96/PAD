@@ -211,3 +211,4 @@ function badEffect(card, enemy){
     enemy.setTint(0xff0000);
 }
 */
+

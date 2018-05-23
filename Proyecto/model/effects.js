@@ -14,4 +14,25 @@ var returnDmgEffect = function(dmg){
 
 returnDmgEffect.prototype.apply = function(target, dealer){
     dealer.hp -= this.dmg;
+
+}
+
+
+var discardHandEffect = function(){
+    this.name = "discardHand"
+    
+}
+
+discardHandEffect.prototype.apply = function(target, dealer){
+    discardHand();
+}
+
+var drawHandEffect = function(){
+    this.name = "drawCard"
+    this.n = 6;
+}
+
+drawHandEffect.prototype.apply = function(target, dealer){
+    drawHand(this.n);
+
 }

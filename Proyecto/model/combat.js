@@ -10,12 +10,16 @@ var Combat = function(){
         "startCombatEffects" : [],
         "startTurnEffects" : [],
         "playCardEffects" : [],
-        "endTurnEffects" : [],
+
+        "endTurnEffects" : [new discardHandEffect()],
+
         "receiveAttackEffects" : [],
     });
     this.enemies = [new Enemy({
         "name":"wotisdis",
+
         "hp" : 10,
+
         "block" : 0,
         "startCombatEffects" : [],
         "startTurnEffects" : [],
@@ -26,16 +30,14 @@ var Combat = function(){
 }
 
 Combat.prototype.action = function(target, card){
-    console.log(card);
     if(card.cost > this.player.mana){
         return false;
     }
     if(!card.action(this.player, target, enemies)){
         return false;
     }
-    this.discard.push(card);
+
     return true;
-    
 }
 
 Combat.prototype.startTurn = function(){
@@ -46,19 +48,60 @@ Combat.prototype.startTurn = function(){
     }
     for(eff of this.player.startTurnEffects)
             eff.apply();
-    for(i = 0 ; i < 6; i++){
-        if(this.deck.length == 0){
-            for(j= 0; j < this.discard.length; j++) {
-                c = this.discard.pop();
-                this.deck.push(c);
-            }
-        }
-        card = this.deck.pop();
-        this.hand.push(card);
-    }
+
+    this.drawHand(6)
 }
 
 Combat.prototype.endTurn = function(){
+    this.player.mana = 3;
     for(eff of this.player.endTurnEffects)
-            eff.apply();
+    {
+        eff.apply();    
+    }
+}
+
+Combat.prototype.discardHand = function(keep){
+    if(keep == undefined)
+        keep = [];
+    
+    for(c of this.hand){
+        remove = true;
+        for(k of keep)
+            if(c === k){
+                remove= false;
+                break;
+            }
+        
+        if(remove){
+            this.discard.push(c);
+        }
+    }
+
+    this.hand = keep;
+}
+
+Combat.prototype.drawHand = function(n){
+    console.log(n)
+    for(let i = 0; i < n; i++){
+        this.hand[i] = this.deck.pop();
+        if(this.deck.length == 0){
+            this.suffleDeck();
+        }
+    }
+}
+
+Combat.prototype.suffleDeck = function(){
+
+    for(d of this.discard){
+        this.deck.push(d);
+    }
+    for(let i = 0; i < 27; i++){
+        rnd1 = Math.floor(Math.random() * this.deck.length);
+        rnd2 = Math.floor(Math.random() * this.deck.length);
+        temp = this.deck[rnd1];
+        this.deck[rnd1] = this.deck[rnd2]
+        this.deck[rnd2] = temp;
+    }
+    this.discard = [];
+
 }
