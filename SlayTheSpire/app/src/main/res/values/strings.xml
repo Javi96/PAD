@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Slay The Spire</string>
+    <string name="logo">Slay The Spire logo</string>
+    <string name="new_game">New game</string>
+    <string name="send_seed">Send seed</string>
+    <string name="classification">Classification</string>
+    <string name="credits">Credits</string>
+    <string name="background">background</string>
+    <string name="not_login">Fail in login</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
