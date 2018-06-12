@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "34229928477",
+    "firebase_url": "https://slay-the-spire-6f836.firebaseio.com",
+    "project_id": "slay-the-spire-6f836",
+    "storage_bucket": "slay-the-spire-6f836.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34229928477:android:3f5a56c857e2e4a2",
+        "android_client_info": {
+          "package_name": "com.pad.slaythespire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34229928477-oc31tj8tkeskq7l8dmlpin7i6osotvve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5jIaHlPlRyzi5AokHp-UBn3pqvhvXHN8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
