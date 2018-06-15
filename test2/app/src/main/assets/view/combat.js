@@ -1,8 +1,8 @@
 var config = {
     type: Phaser.WEBGL,
     parent: 'phaser-example',
-    width: 1920,
-    height: 1080,
+    width: 500,
+    height: 300,
     scene: {
         preload: preload,
         create: create,
