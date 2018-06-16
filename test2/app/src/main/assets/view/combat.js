@@ -1,8 +1,10 @@
+var size = (window.devicePixelRatio || 1);
+
 var config = {
     type: Phaser.WEBGL,
     parent: 'phaser-example',
-    width: 500,
-    height: 300,
+    width: window.innerWidth*size,
+    height: window.innerHeight*size,
     scene: {
         preload: preload,
         create: create,

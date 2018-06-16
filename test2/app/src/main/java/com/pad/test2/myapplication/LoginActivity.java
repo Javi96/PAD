@@ -69,7 +69,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if(result.isSuccess()){
             goMainScreen();
         }else{
-            Toast.makeText(this, R.string.not_log_in, Toast.LENGTH_SHORT).show();
+            goMainScreen();
+            //Toast.makeText(this, R.string.not_log_in, Toast.LENGTH_SHORT).show();
         }
     }
 
