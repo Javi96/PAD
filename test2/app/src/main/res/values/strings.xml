@@ -17,4 +17,5 @@
     </string>
     <string name="title_activity_game">GameActivity</string>
     <string name="not_log_in">not_log_in</string>
+    <string name="game">game</string>
 </resources>
