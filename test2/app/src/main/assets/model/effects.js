@@ -14,6 +14,7 @@ var returnDmgEffect = function(dmg){
 
 returnDmgEffect.prototype.apply = function(target, dealer){
     dealer.hp -= this.dmg;
+
 }
 
 
@@ -33,4 +34,5 @@ var drawHandEffect = function(){
 
 drawHandEffect.prototype.apply = function(target, dealer){
     drawHand(this.n);
+
 }

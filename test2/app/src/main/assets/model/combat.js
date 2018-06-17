@@ -10,12 +10,16 @@ var Combat = function(){
         "startCombatEffects" : [],
         "startTurnEffects" : [],
         "playCardEffects" : [],
+
         "endTurnEffects" : [new discardHandEffect()],
+
         "receiveAttackEffects" : [],
     });
     this.enemies = [new Enemy({
         "name":"wotisdis",
-        "hp" : 100,
+
+        "hp" : 10,
+
         "block" : 0,
         "startCombatEffects" : [],
         "startTurnEffects" : [],
@@ -32,23 +36,25 @@ Combat.prototype.action = function(target, card){
     if(!card.action(this.player, target, enemies)){
         return false;
     }
+
     return true;
 }
 
 Combat.prototype.startTurn = function(){
-    for(let e of this.enemies){
+    for(e of this.enemies){
         for(eff of e.startTurnEffects)
             eff.apply();
         e.selectAttack();
     }
-    for(let eff of this.player.startTurnEffects)
+    for(eff of this.player.startTurnEffects)
             eff.apply();
+
     this.drawHand(6)
 }
 
 Combat.prototype.endTurn = function(){
     this.player.mana = 3;
-    for(let eff of this.player.endTurnEffects)
+    for(eff of this.player.endTurnEffects)
     {
         eff.apply();    
     }
@@ -58,7 +64,7 @@ Combat.prototype.discardHand = function(keep){
     if(keep == undefined)
         keep = [];
     
-    for(let c of this.hand){
+    for(c of this.hand){
         remove = true;
         for(k of keep)
             if(c === k){
@@ -86,7 +92,7 @@ Combat.prototype.drawHand = function(n){
 
 Combat.prototype.suffleDeck = function(){
 
-    for(let d of this.discard){
+    for(d of this.discard){
         this.deck.push(d);
     }
     for(let i = 0; i < 27; i++){
@@ -97,4 +103,5 @@ Combat.prototype.suffleDeck = function(){
         this.deck[rnd2] = temp;
     }
     this.discard = [];
+
 }

@@ -19,7 +19,7 @@ var Enemy = function(config){
     //@param dmg
 Enemy.prototype.receiveAttack = function(dealer, dmg){
     this.hp -= dmg;
-    for(let e of this.receiveAttackEffects){
+    for(e of this.receiveAttackEffects){
         e.apply(this, dealer);
     }
 }
