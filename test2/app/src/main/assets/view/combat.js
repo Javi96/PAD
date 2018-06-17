@@ -1,8 +1,10 @@
+var size = (window.devicePixelRatio || 1);
+
 var config = {
     type: Phaser.WEBGL,
     parent: 'phaser-example',
-    width: 500,
-    height: 300,
+    width: 1749,
+    height: window.innerHeight*size,
     scene: {
         preload: preload,
         create: create,
@@ -50,6 +52,7 @@ function preload(){
 //  CREATE
 //
 function create(){
+
     window.addEventListener('resize', resize);
     resize();
     //this.add.image(1920/2, 1080/2, "bg");
@@ -190,6 +193,8 @@ function create(){
     this.input.on("pointerdown", function(pointer){
         
     }, this);
+
+
 }
 
 //
