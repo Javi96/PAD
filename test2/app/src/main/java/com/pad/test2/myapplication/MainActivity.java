@@ -21,6 +21,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.lang.Class;
 
@@ -75,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private TextView nameTextView;
     private GoogleApiClient googleApiClient;
 
+    private FirebaseAuth firebaseAuth;
+
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +87,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-
-        Button logOut = findViewById(R.id.logout);
-        logOut.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                logOut(v);
-            }
-        });
 
         Button newGame = findViewById(R.id.newgame);
         newGame.setOnClickListener(new View.OnClickListener(){
@@ -118,6 +115,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .build();
 
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null) {
+                    setUserData(user);
+                }else{
+                    goLoginScreen();
+                }
+            }
+        };
+    }
+
+    private void setUserData(FirebaseUser user) {
+        String text = "Welcome " + user.getDisplayName();
+        nameTextView.setText(text);
     }
 
     private void newGame() {
@@ -135,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onStart(){
         super.onStart();
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        /*OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if (opr.isDone()) {
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
@@ -146,7 +160,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     handleSignInResult(googleSignInResult);
                 }
             });
-        }
+        }*/
+        firebaseAuth.addAuthStateListener(firebaseAuthListener);
 
     }
 
@@ -174,7 +189,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void logOut(View view) {
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+        firebaseAuth.signOut();
+
+        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
                 if (status.isSuccess()) {
@@ -189,5 +206,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(firebaseAuthListener != null){
+            firebaseAuth.removeAuthStateListener(firebaseAuthListener);
+        }
     }
 }
