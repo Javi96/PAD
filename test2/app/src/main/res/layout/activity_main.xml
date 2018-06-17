@@ -20,7 +20,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        android:contentDescription="@string/todo" />
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -43,7 +44,7 @@
         android:layout_marginEnd="129dp"
         android:layout_marginStart="130dp"
         android:layout_marginTop="11dp"
-        android:text="Clasification"
+        android:text="@string/clasification"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,12 +53,13 @@
     <Button
         android:id="@+id/newgame"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_marginBottom="11dp"
         android:layout_marginEnd="143dp"
         android:layout_marginStart="144dp"
         android:layout_marginTop="50dp"
-        android:text="New Game"
+        android:background="@drawable/buttonshape"
+        android:text="@string/new_game"
         app:layout_constraintBottom_toTopOf="@+id/classification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,16 +68,27 @@
     <Button
         android:id="@+id/credits"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="165dp"
-        android:text="Credits"
+        android:background="@drawable/buttonshape"
+
+
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="@string/credits"
+        android:textColor="#000000"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sendseed"
-        app:layout_constraintTop_toBottomOf="@+id/logo2" />
+        app:layout_constraintTop_toBottomOf="@+id/logo2"
+        app:layout_constraintVertical_bias="0.6" />
 
     <Button
         android:id="@+id/logout"
@@ -85,7 +98,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="log out"
+        android:text="@string/log_out"
         app:layout_constraintBottom_toTopOf="@+id/credits"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"
@@ -102,10 +115,27 @@
         android:layout_marginEnd="80dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="165dp"
-        android:text="send seed"
+        android:text="@string/send_seed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/credits"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo2" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/name"
+        android:textColor="#FFCA02"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.028"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.015" />
 
 </android.support.constraint.ConstraintLayout>

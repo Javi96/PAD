@@ -14,11 +14,14 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -58,6 +61,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        if (opr.isDone()) {
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+        }
+    }
+
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult){
 
     }
@@ -68,18 +88,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         System.out.println("----------------------------------------------------" + requestCode);
         if(requestCode == SIGN_IN_CODE){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInReseult(result);
+            handleSignInResult(result);
         }
     }
 
-    private void handleSignInReseult(GoogleSignInResult result) {
+    private void handleSignInResult(GoogleSignInResult result) {
         System.out.println("----------------------------------------------------");
         System.out.println(result.getStatus());
         if(result.isSuccess()){
             goMainScreen();
         }else{
             //goMainScreen();
-            Toast.makeText(this, R.string.not_log_in, Toast.LENGTH_SHORT).show();
         }
     }
 

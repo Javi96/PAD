@@ -17,4 +17,19 @@
     </string>
     <string name="title_activity_game">GameActivity</string>
     <string name="not_log_in">not_log_in</string>
+    <string name="game">game</string>
+    <string name="not_revoke">not_revoke</string>
+    <string name="not_close_session">not_close_session</string>
+    <string name="welcome">Welcome </string>
+    <string name="title_activity_classification">ClassificationActivity</string>
+    <string name="leaderboards">Leaderboards</string>
+    <string name="points">Score</string>
+    <string name="rank">Rank</string>
+    <string name="name">Name</string>
+    <string name="todo">TODO</string>
+    <string name="send_seed">send seed</string>
+    <string name="log_out">log out</string>
+    <string name="credits">Credits</string>
+    <string name="clasification">Clasification</string>
+    <string name="new_game">New Game</string>
 </resources>
