@@ -14,10 +14,11 @@ var Player = function(config){
 }
 Player.prototype.receiveAttack = function(dealer, dmg){
     this.hp -= dmg;
-    for(e of this.receiveAttackEffects){
+    for(let e of this.receiveAttackEffects){
         e.apply(this, dealer);
     }
 }
 
 Player.prototype.makeAttack = function(target, dmg){
     target.receiveAttack(this, dmg + this.strenght);
+}

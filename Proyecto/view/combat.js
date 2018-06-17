@@ -1,8 +1,10 @@
+var size = (window.devicePixelRatio || 1);
+
 var config = {
     type: Phaser.WEBGL,
     parent: 'phaser-example',
-    width: 1920,
-    height: 1080,
+    width: window.innerWidth*size,
+    height: window.innerHeight*size,
     scene: {
         preload: preload,
         create: create,
@@ -33,14 +35,14 @@ function preload(){
     combat = new Combat();
     this.load.image("bg", "view/img/bg.jpg");
 
-    for(i = 0; i < combat.enemies.length; i++){
+    for(let i = 0; i < combat.enemies.length; i++){
         this.load.image("enemy_" + i, "view/img/" + combat.enemies[i].name + ".png");
     }
     this.load.image("player", "view/img/player.png");
 
-    for(c of combat.deck){
-        //this.load.image(c.name, "view/img/cards/" + c.name + ".png");
-        this.load.image(c.name, "view/img/empty_card.jpg");
+    for(let c of combat.deck){
+        this.load.image(c.name, "view/img/cards/" + c.name + ".png");
+        //this.load.image(c.name, "view/img/empty_card.jpg");
     }
 
     this.load.image("endTurn", "view/img/assets/endTurn.png");
@@ -71,17 +73,16 @@ function create(){
 
     endTurn.gameObjectDown = function(foo1){
         combat.endTurn();
-
+        for(let h of hand){
+            h.destroy();
+        }
+        combat.startTurn();
+        renderHand(those);
     }
 
     discardDeck = this.add.image(1750, 1000,"discard").setInteractive();
     discardDeck.val = this.add.text(1700, 1010, combat.discard.length, {fontSize: 30, fontStyle: 'bold'});
 
-        for(h of hand){
-            h.destroy();
-        }
-        combat.startTurn();
-        renderHand(those);
   
     discardDeck.isSpecial = true;
 
@@ -107,7 +108,7 @@ function create(){
     player = this.add.sprite(300, 450, "player").setScale(0.7 , 0.7);
     player.model = combat.player;
 
-    for(i = 0; i < combat.enemies.length; i++){
+    for(let i = 0; i < combat.enemies.length; i++){
         enemies[i] = this.add.sprite(1500 + 245 * i, 450, "enemy_" + i);
     }
 
@@ -188,7 +189,7 @@ function create(){
         if(isOn(pointer, player)){
             target = combat.player;
         }else{
-            for(i = 0; i < combat.enemies.length; i++){
+            for(let i = 0; i < combat.enemies.length; i++){
                 if(isOn(pointer, enemies[i])){
                     target = combat.enemies[i];
                 }
@@ -234,7 +235,7 @@ function update ()
 
 
     alive = false;
-    for(e of combat.enemies){
+    for(let e of combat.enemies){
         if(e.hp > 0){
             alive = true; 
             break;
@@ -250,7 +251,7 @@ function update ()
         tweenEnding.play();
         //console.log("el jugador ha ganado")
     }
-
+}
 //
 //  SOBRE QUIÉN ESTÁ LA CARTA
 //
@@ -294,7 +295,7 @@ function renderHand(f){
     console.log(combat.discard);
     console.log("hand: ");
     console.log(combat.hand);
-    for(i = 0; i < combat.hand.length; i++){
+    for(let i = 0; i < combat.hand.length; i++){
         hand[i] = showCard({x:400+i*200, y:950}, combat.hand[i], f).setScale(1.6);
         hand[i].modelCard = combat.hand[i];
     }
