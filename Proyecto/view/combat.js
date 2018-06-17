@@ -3,7 +3,7 @@ var size = (window.devicePixelRatio || 1);
 var config = {
     type: Phaser.WEBGL,
     parent: 'phaser-example',
-    width: 1749,
+    width: window.innerWidth*size,
     height: window.innerHeight*size,
     scene: {
         preload: preload,
@@ -41,8 +41,8 @@ function preload(){
     this.load.image("player", "view/img/player.png");
 
     for(let c of combat.deck){
-        //this.load.image(c.name, "view/img/cards/" + c.name + ".png");
-        this.load.image(c.name, "view/img/empty_card.jpg");
+        this.load.image(c.name, "view/img/cards/" + c.name + ".png");
+        //this.load.image(c.name, "view/img/empty_card.jpg");
     }
 
     this.load.image("endTurn", "view/img/assets/endTurn.png");
@@ -73,17 +73,16 @@ function create(){
 
     endTurn.gameObjectDown = function(foo1){
         combat.endTurn();
-
-    }
-
-    discardDeck = this.add.image(1750, 1000,"discard").setInteractive();
-    discardDeck.val = this.add.text(1700, 1010, combat.discard.length, {fontSize: 30, fontStyle: 'bold'});
-
         for(let h of hand){
             h.destroy();
         }
         combat.startTurn();
         renderHand(those);
+    }
+
+    discardDeck = this.add.image(1750, 1000,"discard").setInteractive();
+    discardDeck.val = this.add.text(1700, 1010, combat.discard.length, {fontSize: 30, fontStyle: 'bold'});
+
   
     discardDeck.isSpecial = true;
 
@@ -190,7 +189,7 @@ function create(){
         if(isOn(pointer, player)){
             target = combat.player;
         }else{
-            for(i = 0; i < combat.enemies.length; i++){
+            for(let i = 0; i < combat.enemies.length; i++){
                 if(isOn(pointer, enemies[i])){
                     target = combat.enemies[i];
                 }
@@ -252,7 +251,7 @@ function update ()
         tweenEnding.play();
         //console.log("el jugador ha ganado")
     }
-
+}
 //
 //  SOBRE QUIÉN ESTÁ LA CARTA
 //
