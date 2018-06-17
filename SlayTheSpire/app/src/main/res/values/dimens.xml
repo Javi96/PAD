@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="semi_height" type="dimen">50%</item>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>
