@@ -20,6 +20,12 @@ var selectedCard;
 var emmiter;
 var hand = [];
 
+var discardDeck;
+var mainDeck;
+var energy;
+var ending;
+var tweenEnding;
+var endResult;
 
 //
 //  PRELOAD
@@ -36,6 +42,7 @@ function preload(){
 
     for(let c of combat.deck){
         this.load.image(c.name, "view/img/cards/" + c.name + ".png");
+        //this.load.image(c.name, "view/img/empty_card.jpg");
     }
 
     this.load.image("endTurn", "view/img/assets/endTurn.png");
@@ -43,7 +50,8 @@ function preload(){
     this.load.image("energy", "view/img/assets/Red_energy.png");
     this.load.image("deck", "view/img/assets/deck.png");
 
-
+    this.load.image("background","view/img/bg2.png");
+    this.load.image("ending", "view/img/end.jpg");
 
     combat.startTurn();
 }
@@ -52,12 +60,14 @@ function preload(){
 //  CREATE
 //
 function create(){
-
     window.addEventListener('resize', resize);
     resize();
+
+    this.add.image(1920/2, 1080/2-100, "background");
+
+    var endTurn = this.add.image(1750, 860,"endTurn").setInteractive()
     //this.add.image(1920/2, 1080/2, "bg");
     var those = this
-    var endTurn = this.add.image(1630, 860,"endTurn").setInteractive();
 
     endTurn.isSpecial = true;
 
@@ -68,18 +78,21 @@ function create(){
         }
         combat.startTurn();
         renderHand(those);
-
     }
 
-    var discardDeck = this.add.image(1850, 1000,"discard").setInteractive();
+    discardDeck = this.add.image(1750, 1000,"discard").setInteractive();
+    discardDeck.val = this.add.text(1700, 1010, combat.discard.length, {fontSize: 30, fontStyle: 'bold'});
 
+  
     discardDeck.isSpecial = true;
 
     discardDeck.gameObjectDown = function(foo1){
         console.log("mostrar cartas de descarte")
     }
 
-    var mainDeck = this.add.image(80, 1000,"deck").setInteractive();
+
+    mainDeck = this.add.image(130, 1000,"deck").setInteractive().setScale(1.1);
+    mainDeck.val = this.add.text(150, 1005, combat.deck.length, {fontSize: 30, fontStyle: 'bold'});
 
     mainDeck.isSpecial = true;
 
@@ -87,7 +100,10 @@ function create(){
         console.log("mostrar cartas del deck")
     }
 
-    var energy = this.add.image(190, 890,"energy");
+
+    energy = this.add.image(130, 850,"energy");
+    energy.val = this.add.text(110, 825, combat.player.mana, {fontSize: 60, fontStyle: 'bold', color: '#000000'});
+
 
     player = this.add.sprite(300, 450, "player").setScale(0.7 , 0.7);
     player.model = combat.player;
@@ -185,16 +201,26 @@ function create(){
             gameObject.y = origY;
             gameObject.setScale(1.6,1.6);
         }else{
+           
             combat.discard.push(selectedCard.modelCard);
-            selectedCard.destroy();
         }
     });
 
-    this.input.on("pointerdown", function(pointer){
-        
-    }, this);
-
-
+    ending = this.add.image(1920/2, 1080/2, "ending").setAlpha(0);
+    tweenEnding = this.tweens.add({
+        targets: ending,
+        scaleX: 4,
+        scaleY: 3,
+        //alpha: 1,
+        ease: 'Sine.easeOut',
+        duration: 3000,
+        delay: 100,
+        paused: true,
+        onStart: onStartHandler,
+        onStartParams: [ending],
+        onComplete: onCompleteHandler,
+        onCompleteParams: [this]
+    }); 
 }
 
 //
@@ -202,6 +228,12 @@ function create(){
 //
 function update ()
 {   
+
+    discardDeck.val.setText(combat.discard.length);
+    mainDeck.val.setText(combat.deck.length);
+    energy.val.setText(combat.player.mana);
+
+
     alive = false;
     for(let e of combat.enemies){
         if(e.hp > 0){
@@ -210,45 +242,16 @@ function update ()
         }
     }
     if(combat.player.hp <= 0){
-        console.log("El jugador ha perdido");
+        endResult = "YOU LOSE!";
+        tweenEnding.play();
+        //console.log("El jugador ha perdido");
         
     } else if(!alive){
-        console.log("el jugador ha ganado")
+        endResult = "YOU WIN!";
+        tweenEnding.play();
+        //console.log("el jugador ha ganado")
     }
-
-    /*var length = graphicsPath.length;
-
-    graphics.clear();
-    graphics.lineStyle(10.0, 0xFFFF00, 1.0);
-    graphics.beginPath();
-    for (var i = 0; i < length; ++i)
-    {
-        var node = graphicsPath[i];
-
-        if (i !== 0)
-        {
-            graphics.lineTo(node.x, node.y);
-        }
-        else
-        {
-            graphics.moveTo(node.x, node.y);
-        }
-    }
-    graphics.strokePath();
-    graphics.closePath();
-
-    time += 0.01;*/
 }
-
-//
-//  EFECTO DE CARTAS
-//
-
-function cardEffect(card, affected){
-    //console.log('wololo');
-}
-
-
 //
 //  SOBRE QUIÉN ESTÁ LA CARTA
 //
@@ -280,53 +283,50 @@ function resize() {
         canvas.style.width = (height * ratio) + "px";
         canvas.style.height = height + "px";
     }
-    
-        //resize sin ratio 
-    /*canvas.style.width = width + "px";
-    canvas.style.height = height + "px";*/
 }
 
-/*function goodEffect(card, player){
-    this.card.on('dragend', function (pointer, gameObjects) {
-        console.log("hasta qui llego");
-                    
-    });
-}
-
-function badEffect(card, enemy){
-    enemy.setTint(0xff0000);
-}
-*/
 
 
 function renderHand(f){
 
-    /*console.log("deck: ");
+    console.log("deck: ");
     console.log(combat.deck);
     console.log("discard: ");
     console.log(combat.discard);
     console.log("hand: ");
-    console.log(combat.hand);*/
+    console.log(combat.hand);
     for(let i = 0; i < combat.hand.length; i++){
         hand[i] = showCard({x:400+i*200, y:950}, combat.hand[i], f).setScale(1.6);
         hand[i].modelCard = combat.hand[i];
     }
 }
-
+  
 var fS =12
 function showCard(pos, card, f){
 
     var bg = f.add.image(0, 0, card.name);
-    var desc = f.add.text(-50, 40, card.descripcion, {fontSize: fS});
+
+    var desc = f.add.text(-50, 40, function(card){    
+        return card.descripcion;
+    }(card), {fontSize: fS});
     var name = f.add.text(-20, -95, card.name, {fontSize: fS});
     var ty = f.add.text(-10, 10, card.type, {fontSize: fS*0.6, color: '#000000'});
-    var cost = f.add.text(-75, -105, card.cost, {fontSize: fS*1.5, fontStyle: 'bold'});
+    var cost = f.add.text(-75, -105, card.cost, {fontSize: fS*1.5, fontStyle: 'bold', color: '#000000'});
+
 
     var carta = f.add.container(pos.x, pos.y, [ bg, desc, name, ty , cost]);
     //ZONA EN LA QUE SE INTERACTUA CON EL CONTAINER
     carta.setInteractive(new Phaser.Geom.Rectangle(-bg.width/2, -bg.height/2, bg.width, bg.height), Phaser.Geom.Rectangle.Contains);
     f.input.setDraggable(carta);
     return carta;
+}
+
+function onStartHandler (tweenEnding, targets, gameObject){
+    gameObject.setAlpha(1);
+}
+function onCompleteHandler (tweenEnding, targets, f){
+    f.add.text(1920/2-220, 1080/2, endResult, {fontSize: 100, fontStyle: 'italic', color: '#000000'});
+
 }
 
 function discardHand(){
@@ -337,4 +337,4 @@ function drawHand(){
     combat.drawHand();
 }
 
-console.log('hola"" ');
+
