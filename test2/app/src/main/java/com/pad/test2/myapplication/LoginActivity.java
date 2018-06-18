@@ -1,6 +1,7 @@
 package com.pad.test2.myapplication;
 
 import android.content.Intent;
+import android.content.SyncStatusObserver;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +32,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -47,6 +56,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private ProgressBar progressBar;
 
     private ImageView logo;
+
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         signInButton.setColorScheme(SignInButton.COLOR_DARK);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -134,7 +146,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount signInAccount) {
 
         progressBar.setVisibility(View.VISIBLE);
         signInButton.setVisibility(View.INVISIBLE);
@@ -148,6 +160,35 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 if(!task.isSuccessful()){
                     Toast.makeText(getApplicationContext(), R.string.not_firebase_auth, Toast.LENGTH_SHORT).show();
+                }else{
+                    String id = signInAccount.getId();
+                    Query query = databaseReference.child("users").orderByChild("email").equalTo(signInAccount.getEmail());
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                //existe
+                            }else{
+                                String id = signInAccount.getId();
+                                HashMap<String,String> hashMap =  new HashMap<>();
+                                hashMap.put("name", signInAccount.getDisplayName());
+                                hashMap.put("email", signInAccount.getEmail());
+                                HashMap<String,String> games =  new HashMap<>();
+                                databaseReference.child("users").child(id).setValue(hashMap);
+                                /*databaseReference.child("users").child(id).child("games").push().setValue("1");
+                                databaseReference.child("users").child(id).child("games").push().setValue("2");
+                                databaseReference.child("users").child(id).child("games").push().setValue("3");
+                                databaseReference.child("users").child(id).child("games").push().setValue("4");*/
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
             }
         });

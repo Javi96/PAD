@@ -1,10 +1,12 @@
 package com.pad.test2.myapplication;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
@@ -34,12 +36,12 @@ public class GameActivity extends AppCompatActivity {
         System.out.println("-------------------------------------------------------------------------------");
         System.out.println(width + " " +  height);
 
-        WebView view = findViewById(R.id.webview);
-        WebSettings settings = view.getSettings();
+        WebView webview = findViewById(R.id.webview);
+        WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setAllowFileAccessFromFileURLs(true);
         settings.setAllowUniversalAccessFromFileURLs(true);
-        view.loadUrl(url2);
+        webview.loadUrl(url2);
 
 
     }

@@ -3,7 +3,7 @@ var size = (window.devicePixelRatio || 1);
 var config = {
     type: Phaser.WEBGL,
     parent: 'phaser-example',
-    width: window.innerWidth*size,
+    width: 1749,
     height: window.innerHeight*size,
     scene: {
         preload: preload,
@@ -56,10 +56,20 @@ function preload(){
     combat.startTurn();
 }
 
+function fullscreen(){
+    var el = document.getElementsByTagName('canvas')[0];
+    var requestFullScreen = el.requestFullscreen || el.msRequestFullscreen || el.mozRequestFullScreen || el.webkitRequestFullscreen;
+    if(requestFullScreen){
+        console.log("fullscreen");
+        requestFullScreen.call(el);
+    }
+}
+
 //
 //  CREATE
 //
 function create(){
+
     window.addEventListener('resize', resize);
     resize();
 
