@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -65,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        final ActionBar actionBar = getSupportActionBar();
+
         setContentView(R.layout.activity_login);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -173,12 +176,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 HashMap<String,String> hashMap =  new HashMap<>();
                                 hashMap.put("name", signInAccount.getDisplayName());
                                 hashMap.put("email", signInAccount.getEmail());
-                                HashMap<String,String> games =  new HashMap<>();
                                 databaseReference.child("users").child(id).setValue(hashMap);
-                                /*databaseReference.child("users").child(id).child("games").push().setValue("1");
-                                databaseReference.child("users").child(id).child("games").push().setValue("2");
-                                databaseReference.child("users").child(id).child("games").push().setValue("3");
-                                databaseReference.child("users").child(id).child("games").push().setValue("4");*/
+                                HashMap<String,String> game1 =  new HashMap<>();
+                                game1.put("score", "2");
+                                game1.put("date", "date1");
+                                game1.put("user", "user1");
+                                game1.put("seed", "seed1");
+                                HashMap<String,String> game2 =  new HashMap<>();
+                                game2.put("score", "1");
+                                game2.put("date", "date2");
+                                game2.put("user", "user2");
+                                game2.put("seed", "seed2");
+                                databaseReference.child("games").push().setValue(game1);
+                                databaseReference.child("games").push().setValue(game2);
                             }
                         }
 

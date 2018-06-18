@@ -215,4 +215,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             firebaseAuth.removeAuthStateListener(firebaseAuthListener);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
