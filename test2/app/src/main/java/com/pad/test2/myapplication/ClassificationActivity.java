@@ -1,5 +1,6 @@
 package com.pad.test2.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -35,6 +38,9 @@ public class ClassificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_classification);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -52,20 +58,19 @@ public class ClassificationActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        Query query = databaseReference.child("users").orderByChild("email");
+        Query query = databaseReference.child("games").orderByChild("score");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     //existe
                     int i = 1;
-                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                        for (DataSnapshot game : issue.child("games").getChildren()) {
-                            rows.add(new String[]{Integer.toString(i++),
-                                    (String ) issue.child("name").getValue(),
-                                    (String) game.getValue()});
-                        }
+                    for (DataSnapshot game : dataSnapshot.getChildren()) {
+                        rows.add(new String[]{Integer.toString(i++),
+                                (String ) game.child("user").getValue(),
+                                (String) game.child("score").getValue()});
                     }
+
                     tableDynamic = new TableDynamic(tableLayout, getApplicationContext(), rows, row.getLayoutParams(), leaderboard.getLayoutParams());
 
                 }
@@ -78,5 +83,14 @@ public class ClassificationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        System.out.print("-----------------------------------------------------------" +
+                "--------------------------------------------------------" +
+                "----------------------------------------------------");
 
+    }
 }
