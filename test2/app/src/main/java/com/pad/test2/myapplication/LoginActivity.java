@@ -44,6 +44,8 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    // modificacione sbasicas sobre informacion personal
+    // añadir amigos
     private GoogleApiClient googleApiClient;
 
     private SignInButton signInButton;
@@ -66,7 +68,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        final ActionBar actionBar = getSupportActionBar();
 
         setContentView(R.layout.activity_login);
 
