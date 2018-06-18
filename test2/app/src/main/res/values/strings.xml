@@ -33,4 +33,6 @@
     <string name="clasification">Clasification</string>
     <string name="new_game">New Game</string>
     <string name="not_firebase_auth">not_firebase_auth</string>
+    <string name="friends">friends</string>
+    <string name="configuration">configuration</string>
 </resources>
