@@ -1,10 +1,10 @@
 var size = (window.devicePixelRatio || 1);
 
 var config = {
-    type: Phaser.WEBGL,
+    type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 1749,
-    height: window.innerHeight*size,
+    width: 1920,
+    height: 1080,
     scene: {
         preload: preload,
         create: create,
@@ -56,59 +56,24 @@ function preload(){
     combat.startTurn();
 }
 
-function fullscreen(){
-    var el = document.getElementsByTagName('canvas')[0];
-    var requestFullScreen = el.requestFullscreen || el.msRequestFullscreen || el.mozRequestFullScreen || el.webkitRequestFullscreen;
-    if(requestFullScreen){
-        console.log("fullscreen");
-        requestFullScreen.call(el);
-    }
-}
-
 //
 //  CREATE
 //
 function create(){
-
     window.addEventListener('resize', resize);
     resize();
 
     this.add.image(1920/2, 1080/2-100, "background");
+ 
+    new EndTurn(this, 1750, 860);
+    
 
-    var endTurn = this.add.image(1750, 860,"endTurn").setInteractive()
-    //this.add.image(1920/2, 1080/2, "bg");
-    var those = this
-
-    endTurn.isSpecial = true;
-
-    endTurn.gameObjectDown = function(foo1){
-        combat.endTurn();
-        for(let h of hand){
-            h.destroy();
-        }
-        combat.startTurn();
-        renderHand(those);
-    }
-
-    discardDeck = this.add.image(1750, 1000,"discard").setInteractive();
-    discardDeck.val = this.add.text(1700, 1010, combat.discard.length, {fontSize: 30, fontStyle: 'bold'});
-
-  
-    discardDeck.isSpecial = true;
-
-    discardDeck.gameObjectDown = function(foo1){
-        console.log("mostrar cartas de descarte")
-    }
+    discardDeck = new DiscardDeck(this, 1750, 1000);
+    
 
 
-    mainDeck = this.add.image(130, 1000,"deck").setInteractive().setScale(1.1);
+    mainDeck = new MainDeck(this, 130, 1000)
     mainDeck.val = this.add.text(150, 1005, combat.deck.length, {fontSize: 30, fontStyle: 'bold'});
-
-    mainDeck.isSpecial = true;
-
-    mainDeck.gameObjectDown = function(foo1){
-        console.log("mostrar cartas del deck")
-    }
 
 
     energy = this.add.image(130, 850,"energy");
@@ -137,83 +102,30 @@ function create(){
     this.input.dragDistanceThreshold = 40;
     var origX = 0;
     var origY = 0;
-    
-    var tweens = this.tweens;
-    this.input.on("gameobjectdown", function(pointer, gameObject){
-        if(gameObject.isSpecial){
-            if(gameObject.gameObjectDown)
-                gameObject.gameObjectDown(pointer)
-        }
-        else{
-            selectedCard = gameObject;
-            origX = selectedCard.x;
-            origY = selectedCard.y;
-            tweens.add({
-                targets: selectedCard,
-                scaleX : 2.5,
-                scaleY: 2.5,
-                y: selectedCard.y - 160,
-                ease: 'Sine.easeOut',
-                duration: 150,
-                delay: 0,
 
-            });
-        }
+    this.input.on("gameobjectdown", function(pointer, gameObject){
+        if(gameObject.objectDown)
+            gameObject.objectDown(pointer)
     })
     this.input.on("gameobjectup", function(pointer, gameObject){
-        if(gameObject.isSpecial){
-            if(gameObject.gameObjectUp)
-                gameObject.gameObjectUp(pointer)
+        if(gameObject.gameObjectUp)
+            gameObject.gameObjectUp(pointer)
         }
-        else{
-            tweens.add({
-                targets: selectedCard,
-                scaleX : 1.6,
-                scaleY: 1.6,
-                y: origY,
-                ease: 'Sine.easeIn',
-                duration: 150,
-                delay: 0,
-            });
-            selectedCard = null;
-        }
-    });
+    );
     this.input.on('dragstart', function (pointer, gameObject) {
-        tweens.add({
-            targets: selectedCard,
-            scaleX : 0,
-            scaleY: 0,
-            ease: 'Sine.easeIn',
-            duration: 300,
-            delay: 0,
-        });
+        if(gameObject.dragStart)
+            gameObject.dragStart(pointer)
     }, this);
 
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-        gameObject.x = dragX;
-        gameObject.y = dragY;
+        console.log(gameObject)
+        if(gameObject.drag)
+            gameObject.drag(pointer, dragX, dragY)
     });
 
     this.input.on('dragend', function (pointer, gameObject) {
-        target = combat.player
-        if(isOn(pointer, player)){
-            target = combat.player;
-        }else{
-            for(let i = 0; i < combat.enemies.length; i++){
-                if(isOn(pointer, enemies[i])){
-                    target = combat.enemies[i];
-                }
-            }
-        }
-
-        if(!combat.action(target, selectedCard.modelCard)){
-            gameObject.x = origX;
-            gameObject.y = origY;
-            gameObject.setScale(1.6,1.6);
-        }else{
-           
-            combat.discard.push(selectedCard.modelCard);
-        }
+        if(gameObject.dragEnd)
+            gameObject.dragEnd(pointer)
     });
 
     ending = this.add.image(1920/2, 1080/2, "ending").setAlpha(0);
@@ -238,7 +150,6 @@ function create(){
 //
 function update ()
 {   
-
     discardDeck.val.setText(combat.discard.length);
     mainDeck.val.setText(combat.deck.length);
     energy.val.setText(combat.player.mana);
@@ -297,21 +208,14 @@ function resize() {
 
 
 
-function renderHand(f){
-
-    console.log("deck: ");
-    console.log(combat.deck);
-    console.log("discard: ");
-    console.log(combat.discard);
-    console.log("hand: ");
-    console.log(combat.hand);
+function renderHand(scene){
     for(let i = 0; i < combat.hand.length; i++){
-        hand[i] = showCard({x:400+i*200, y:950}, combat.hand[i], f).setScale(1.6);
-        hand[i].modelCard = combat.hand[i];
+        hand[i] = new Card(scene, 400+i*200, 950, combat.hand[i])
+        scene.input.setDraggable(hand[i]);
     }
 }
   
-var fS =12
+/*var fS =12
 function showCard(pos, card, f){
 
     var bg = f.add.image(0, 0, card.name);
@@ -329,7 +233,7 @@ function showCard(pos, card, f){
     carta.setInteractive(new Phaser.Geom.Rectangle(-bg.width/2, -bg.height/2, bg.width, bg.height), Phaser.Geom.Rectangle.Contains);
     f.input.setDraggable(carta);
     return carta;
-}
+}*/
 
 function onStartHandler (tweenEnding, targets, gameObject){
     gameObject.setAlpha(1);
