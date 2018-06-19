@@ -5,14 +5,13 @@ var config = {
     parent: 'phaser-example',
     width: 1920,
     height: 1080,
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
+    scene: [
+        CombatScene,
+        LoseCombatScene
+    ]
     
 }
-var game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
 var combat;
 var player;
 var enemies = [];
@@ -30,7 +29,7 @@ var endResult;
 //
 //  PRELOAD
 //
-function preload(){
+/*function preload(){
 
     combat = new Combat();
     this.load.image("bg", "view/img/bg.jpg");
@@ -54,12 +53,12 @@ function preload(){
     this.load.image("ending", "view/img/end.jpg");
 
     combat.startTurn();
-}
+}*/
 
 //
 //  CREATE
 //
-function create(){
+/*function create(){
     window.addEventListener('resize', resize);
     resize();
 
@@ -143,12 +142,12 @@ function create(){
         onComplete: onCompleteHandler,
         onCompleteParams: [this]
     }); 
-}
+}*/
 
 //
 //  UPDATE
 //
-function update ()
+/*function update ()
 {   
     discardDeck.val.setText(combat.discard.length);
     mainDeck.val.setText(combat.deck.length);
@@ -235,7 +234,7 @@ function showCard(pos, card, f){
     return carta;
 }*/
 
-function onStartHandler (tweenEnding, targets, gameObject){
+/*function onStartHandler (tweenEnding, targets, gameObject){
     gameObject.setAlpha(1);
 }
 function onCompleteHandler (tweenEnding, targets, f){
@@ -249,6 +248,6 @@ function discardHand(){
 
 function drawHand(){
     combat.drawHand();
-}
+}*/
 
 
