@@ -178,10 +178,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 hashMap.put("name", signInAccount.getDisplayName());
                                 hashMap.put("email", signInAccount.getEmail());
                                 databaseReference.child("users").child(id).setValue(hashMap);
-                                for (int i=1; i<10; i++){
+                                for (int i=1; i<30; i++){
                                     HashMap<String,String> game =  new HashMap<>();
                                     game.put("score", Double.toString(Math.random()*50 + 1));
                                     game.put("date", "date" + Integer.toString(i));
+                                    game.put("wins", Integer.toString(0));
+                                    game.put("defeats", Integer.toString(0));
                                     game.put("user", "user" + Integer.toString(i));
                                     game.put("seed", "seed" + Integer.toString(i));
 
@@ -204,7 +206,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void goMainScreen() {
-        Intent intent = new Intent(this, ConfigurationActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

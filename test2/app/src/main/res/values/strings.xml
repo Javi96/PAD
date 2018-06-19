@@ -35,7 +35,7 @@
     <string name="not_firebase_auth">not_firebase_auth</string>
     <string name="friends">friends</string>
     <string name="title_activity_configuration">ConfigurationActivity</string>
-    <string name="configuration">Configuration</string>
+    <string name="configuration">Personal information</string>
     <string name="savechanges">Save changes</string>
     <string name="config_name">Name: </string>
 
@@ -50,6 +50,11 @@
     <string name="err_msg_password">Enter the password</string>
     <string name="wins">Total victories:</string>
     <string name="defeats">Total defeats:</string>
+    <string name="killed">Enemies killed:</string>
+    <string name="min_rank">Min rank:</string>
+    <string name="max_rank">Max rank:</string>
+    <string name="min_score">Min score:</string>
+    <string name="max_score">Max score</string>
 
 
 </resources>
