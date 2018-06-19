@@ -34,5 +34,22 @@
     <string name="new_game">New Game</string>
     <string name="not_firebase_auth">not_firebase_auth</string>
     <string name="friends">friends</string>
-    <string name="configuration">configuration</string>
+    <string name="title_activity_configuration">ConfigurationActivity</string>
+    <string name="configuration">Configuration</string>
+    <string name="savechanges">Save changes</string>
+    <string name="config_name">Name: </string>
+
+
+
+    <string name="hint_name">Full Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="err_msg_name">Enter your full name</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
+    <string name="wins">Total victories:</string>
+    <string name="defeats">Total defeats:</string>
+
+
 </resources>
