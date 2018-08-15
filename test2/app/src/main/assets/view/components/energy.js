@@ -1,5 +1,5 @@
 var Energy = new Phaser.Class({
-    Extends: Phaser.GameObjects.Image,
+    Extends: Phaser.GameObjects.Sprite,
     initialize:
     function (scene, x, y){
         Phaser.GameObjects.Image.call(this, scene);

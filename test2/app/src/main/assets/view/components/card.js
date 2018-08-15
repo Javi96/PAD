@@ -13,6 +13,7 @@ var Card= new Phaser.Class({
         selectedCard = this;
         origX = selectedCard.x;
         origY = selectedCard.y;
+        console.log(selectedCard)
         this.scene.tweens.add({
             targets: selectedCard,
             scaleX : 2.5,
@@ -50,23 +51,33 @@ var Card= new Phaser.Class({
         this.y = dragY;
     },
     dragEnd:function (pointer) {
-        target = combat.player
+        target = player
         if(isOn(pointer, player)){
-            target = combat.player;
+            target = player;
         }else{
             for(let i = 0; i < combat.enemies.length; i++){
                 if(isOn(pointer, enemies[i])){
-                    target = combat.enemies[i];
+                    target = enemies[i];
                 }
             }
         }
 
-        if(!combat.action(target, selectedCard.model)){
+        if(!combat.action(target.model, selectedCard.model)){
             this.x = origX;
             this.y = origY;
             this.setScale(1.6,1.6);
         }else{       
             combat.discard.push(selectedCard.model);
+            console.log(target)
+            this.scene.tweens.add({
+                targets: target,
+                x: '-=10',
+                y: '-=10',
+                ease: 'Linear',
+                duration: 20,
+                repeat:10,
+                yoyo: true
+            });
         }
     }
 })

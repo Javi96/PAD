@@ -11,6 +11,7 @@ var Enemy = function(config){
 
     this.attackList = [this.attack1, this.attack2];
     this.selectedAttack;
+    this.nextAttack = null;
 }
 
 
@@ -24,16 +25,16 @@ Enemy.prototype.receiveAttack = function(dealer, dmg){
     }
 }
 
-Enemy.prototype.attack1 = function(player){
-    player.receiveAttack(this, 4 + this.strenght);
+Enemy.prototype.attack1 = function(){
+    combat.player.receiveAttack(this, 4 + this.strenght);
     console.log("hare " + (4 + this.strenght) + " dmg" )
 }
 
-Enemy.prototype.attack2 = function(player){
+Enemy.prototype.attack2 = function(){
     this.block += 5;
     console.log("bloqueare " + 5 + "de dmg" )
 }
 
 Enemy.prototype.selectAttack = function(){
-    this.selectAttack = this.attackList[1];
+    this.nextAttack = this.attackList[1];
 }

@@ -18,8 +18,8 @@ var Combat = function(){
     this.enemies = [new Enemy({
         "name":"wotisdis",
 
-        "hp" : 10,
-
+        "hp" : 50,
+        "strenght" : 0,
         "block" : 0,
         "startCombatEffects" : [],
         "startTurnEffects" : [],
@@ -46,6 +46,9 @@ Combat.prototype.startTurn = function(){
             eff.apply();
         e.selectAttack();
     }
+    for(e of this.enemies){
+        e.selectAttack();
+    }
     for(eff of this.player.startTurnEffects)
             eff.apply();
 
@@ -54,6 +57,9 @@ Combat.prototype.startTurn = function(){
 
 Combat.prototype.endTurn = function(){
     this.player.mana = 3;
+    for(e of this.enemies){
+        e.nextAttack();
+    }
     for(eff of this.player.endTurnEffects)
     {
         eff.apply();    
@@ -81,7 +87,6 @@ Combat.prototype.discardHand = function(keep){
 }
 
 Combat.prototype.drawHand = function(n){
-    console.log(n)
     for(let i = 0; i < n; i++){
         this.hand[i] = this.deck.pop();
         if(this.deck.length == 0){

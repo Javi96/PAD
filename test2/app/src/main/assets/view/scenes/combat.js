@@ -30,15 +30,14 @@ var CombatScene = new Phaser.Class({
     },
 
     create:function(){
-        console.log("create")
         window.addEventListener('resize', resize);
         resize();
     
+        
         this.add.image(1920/2, 1080/2-100, "background");
      
         new EndTurn(this, 1750, 860);
         
-    
         discardDeck = new DiscardDeck(this, 1750, 1000);
         
     
@@ -51,11 +50,12 @@ var CombatScene = new Phaser.Class({
         energy.val = this.add.text(110, 825, combat.player.mana, {fontSize: 60, fontStyle: 'bold', color: '#000000'});
     
     
-        player = this.add.sprite(300, 450, "player").setScale(0.7 , 0.7);
-        player.model = combat.player;
+        //player = this.add.sprite(300, 450, "player").setScale(0.7 , 0.7);
+        //var playerHP = new HpBar(this, 250, 200, 300, 200);
+        player  = new Entity(this, 300, 450, "player", combat.player);      
     
         for(let i = 0; i < combat.enemies.length; i++){
-            enemies[i] = this.add.sprite(1500 + 245 * i, 450, "enemy_" + i);
+            enemies[i] = new Entity(this, 1500 + 245 * i, 450, "enemy_" + i, combat.enemies[i]);
         }
     
         //
@@ -89,7 +89,6 @@ var CombatScene = new Phaser.Class({
         }, this);
     
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            console.log(gameObject)
             if(gameObject.drag)
                 gameObject.drag(pointer, dragX, dragY)
         });
@@ -105,7 +104,10 @@ var CombatScene = new Phaser.Class({
         discardDeck.val.setText(combat.discard.length);
         mainDeck.val.setText(combat.deck.length);
         energy.val.setText(combat.player.mana);
-
+        player.setHp();
+        for(let e of enemies){
+            e.setHp();
+        }
 
         var alive = false;
         for(let e of combat.enemies){
@@ -193,11 +195,9 @@ function onCompleteHandler (tweenEnding, targets, f){
     f.add.text(1920/2-220, 1080/2, endResult, {fontSize: 100, fontStyle: 'italic', color: '#000000'});
 
 }
-
 function discardHand(){
     combat.discardHand();
 }
-
 function drawHand(){
     combat.drawHand();
 }

@@ -1,9 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.2" >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        canvas{
+            padding: 0px;
+        }
+        body{
+            margin:0px;
+        }
+    </style>
+</head>
+
 <body>
-
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
-
+<div >
+    <script src="lib/phaser.min.js"></script>
+    <script>
+            var Cuadrado = new Phaser.Class({
+                Extends: Phaser.Scene,
+                initialize:
+                function Cuadrado(params){
+                    Phaser.Scene.call(this, {key: 'Cuadrado'})
+                },
+    
+                create:function(){
+                    var rect = new Phaser.Geom.Rectangle(250, 200, 300, 200);
+    
+                    var graphics = this.add.graphics({ fillStyle: { color: 0x0000ff } });
+    
+                    graphics.fillRectShape(rect);
+                }
+            })
+        </script>
+    <script>
+        var config = {
+            type: Phaser.AUTO,
+            parent: 'phaser-example',
+            width: 1920,
+            height: 1080,
+            scene: [
+                Cuadrado
+            ]
+            
+        }
+        const game = new Phaser.Game(config);
+    </script>
+   
+</div>
 </body>
+
 </html>
