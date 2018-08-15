@@ -70,6 +70,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Toast.makeText(this, "sign_in_button", Toast.LENGTH_LONG).show();
                 signIn();
                 break;
+            case R.id.btn_login:
+                Toast.makeText(this, "login button", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.link_signup:
+                Toast.makeText(this, "sign up button", Toast.LENGTH_LONG).show();
+                break;
             default:
                 break;
         }
