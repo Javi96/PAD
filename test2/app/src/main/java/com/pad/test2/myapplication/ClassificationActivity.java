@@ -1,16 +1,24 @@
 package com.pad.test2.myapplication;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -32,8 +40,8 @@ public class ClassificationActivity extends AppCompatActivity {
     private TableLayout tableLayout;
     private TableRow row;
     private TextView leaderboard;
-
     private DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +52,9 @@ public class ClassificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_classification);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
         tableLayout = findViewById(R.id.list);
-        row = (TableRow ) findViewById(R.id.row2);
-        leaderboard = (TextView ) findViewById(R.id.rank);
+        row = ( TableRow ) findViewById(R.id.row2);
+        leaderboard = ( TextView ) findViewById(R.id.rank);
 
         this.rows = new ArrayList<>();
 
@@ -67,8 +74,8 @@ public class ClassificationActivity extends AppCompatActivity {
                     int i = 1;
                     for (DataSnapshot game : dataSnapshot.getChildren()) {
                         rows.add(new String[]{Integer.toString(i++),
-                                (String ) game.child("user").getValue(),
-                                (String) game.child("score").getValue()});
+                                ( String ) game.child("user").getValue(),
+                                ( String ) game.child("score").getValue()});
                     }
 
                     tableDynamic = new TableDynamic(tableLayout, getApplicationContext(), rows, row.getLayoutParams(), leaderboard.getLayoutParams());
@@ -83,14 +90,26 @@ public class ClassificationActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         System.out.print("-----------------------------------------------------------" +
                 "--------------------------------------------------------" +
-                "----------------------------------------------------");
+                "----------------------------------------------------");*/
+
+    @Override
+    public void onBackPressed() {
+        finish();
 
     }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }
+
+
+

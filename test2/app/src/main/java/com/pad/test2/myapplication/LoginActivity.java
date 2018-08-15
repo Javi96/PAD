@@ -178,18 +178,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 hashMap.put("name", signInAccount.getDisplayName());
                                 hashMap.put("email", signInAccount.getEmail());
                                 databaseReference.child("users").child(id).setValue(hashMap);
-                                HashMap<String,String> game1 =  new HashMap<>();
-                                game1.put("score", "2");
-                                game1.put("date", "date1");
-                                game1.put("user", "user1");
-                                game1.put("seed", "seed1");
-                                HashMap<String,String> game2 =  new HashMap<>();
-                                game2.put("score", "1");
-                                game2.put("date", "date2");
-                                game2.put("user", "user2");
-                                game2.put("seed", "seed2");
-                                databaseReference.child("games").push().setValue(game1);
-                                databaseReference.child("games").push().setValue(game2);
+                                for (int i=1; i<30; i++){
+                                    HashMap<String,String> game =  new HashMap<>();
+                                    game.put("score", Double.toString(Math.random()*50 + 1));
+                                    game.put("date", "date" + Integer.toString(i));
+                                    game.put("wins", Integer.toString(0));
+                                    game.put("defeats", Integer.toString(0));
+                                    game.put("user", "user" + Integer.toString(i));
+                                    game.put("seed", "seed" + Integer.toString(i));
+
+                                    databaseReference.child("games").push().setValue(game);
+                                }
+
                             }
                         }
 
