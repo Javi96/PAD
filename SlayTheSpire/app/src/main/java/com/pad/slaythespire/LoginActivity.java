@@ -1,77 +1,160 @@
 package com.pad.slaythespire;
 
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    private GoogleApiClient gac;
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
-    private SignInButton singInButton;
 
-    private static final int SIGN_IN_CODE = 777;
+    private GoogleSignInClient client;
+    private GoogleSignInOptions options;
+    private GoogleSignInAccount account;
+    private SignInButton signInButton;
+
+    private static int RC_SIGN_IN = 100;
+    private static String TAG = "INFO";
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        this.options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
+        this.client = GoogleSignIn.getClient(this, options);
+        this.signInButton = findViewById(R.id.sign_in_button);
+        //this.signInButton.setSize(SignInButton.SIZE_STANDARD);
 
-        gac = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        singInButton = (SignInButton) findViewById(R.id.signInButton);
-        singInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = Auth.GoogleSignInApi.getSignInIntent(gac);
-                startActivityForResult(intent, SIGN_IN_CODE);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account!=null){
+            this.handleLastSignedInAccount(this.account);
+        }
+
+    }
+
+    private void handleLastSignedInAccount(GoogleSignInAccount account) {
+        Log.i(TAG, "Last singed account");
+        Log.i(TAG, "Name: " + this.account.getDisplayName());
+        Log.i(TAG, "Email: " + this.account.getEmail());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_in_button:
+                Toast.makeText(this, "sign_in_button", Toast.LENGTH_LONG).show();
+                signIn();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void signIn() {
+        Intent signInIntent = client.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            //GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            //int statusCode = result.getStatus().getStatusCode();
+            //Log.w(TAG, "Status code: " + statusCode);
+            //Log.v(TAG, "Account: " + result.getSignInAccount());
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            this.account = completedTask.getResult(ApiException.class);
+            Log.v(TAG, "Name: " + this.account.getDisplayName());
+            Log.v(TAG, "Email: " + this.account.getEmail());
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            //updateUI(account);
+        } catch (ApiException e) {
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            switch(e.getStatusCode()){
+                case GoogleSignInStatusCodes.SIGN_IN_REQUIRED:
+                    break;
+                case GoogleSignInStatusCodes.NETWORK_ERROR:
+                    break;
+                case GoogleSignInStatusCodes.INVALID_ACCOUNT:
+                    break;
+                case GoogleSignInStatusCodes.INTERNAL_ERROR:
+                    break;
             }
-        });
+            //updateUI(null);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==SIGN_IN_CODE){
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSingInResult(result);
-        }
-    }
-
-    private void handleSingInResult(GoogleSignInResult result) {
-        if(result.isSuccess()){
-            goMainScreen();
-        }else{
-            Toast.makeText(this, R.string.not_login, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void goMainScreen() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 }
