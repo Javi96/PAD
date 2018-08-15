@@ -1,5 +1,6 @@
 var Player = function(config){
     this.hp = config.hp;
+    this.deck = [];
     this.mana = config.mana;
     this.block = config.block;
     this.strenght = config.strenght;

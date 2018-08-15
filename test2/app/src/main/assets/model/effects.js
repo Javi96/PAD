@@ -34,5 +34,12 @@ var drawHandEffect = function(){
 
 drawHandEffect.prototype.apply = function(target, dealer){
     drawHand(this.n);
+}
 
+var loseBlockEffect = function(){
+    this.name = "loseBlockEffect"
+}
+
+loseBlockEffect.prototype.apply = function(target){
+    target.block = 0;
 }

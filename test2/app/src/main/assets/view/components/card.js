@@ -1,0 +1,83 @@
+var Card= new Phaser.Class({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+    function (scene, x, y, model){
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setTexture(model.name);
+        this.model = model;
+        this.setPosition(x, y);
+        this.setInteractive()
+        scene.children.add(this);
+    },
+    objectDown:function(pointer){
+        selectedCard = this;
+        origX = selectedCard.x;
+        origY = selectedCard.y;
+        console.log(selectedCard)
+        this.scene.tweens.add({
+            targets: selectedCard,
+            scaleX : 2.5,
+            scaleY: 2.5,
+            y: selectedCard.y - 160,
+            ease: 'Sine.easeOut',
+            duration: 150,
+            delay: 0,
+        });
+    },
+    objectUp:function(pointer){
+        this.scene.tweens.add({
+            targets: selectedCard,
+            scaleX : 1.6,
+            scaleY: 1.6,
+            y: origY,
+            ease: 'Sine.easeIn',
+            duration: 150,
+            delay: 0,
+        });
+        selectedCard = null;
+    },
+    dragStart:function(pointer){
+        this.scene.tweens.add({
+            targets: selectedCard,
+            scaleX : 0,
+            scaleY: 0,
+            ease: 'Sine.easeIn',
+            duration: 300,
+            delay: 0,
+        });
+    },
+    drag: function (pointer, dragX, dragY) {
+        this.x = dragX;
+        this.y = dragY;
+    },
+    dragEnd:function (pointer) {
+        target = player
+        if(isOn(pointer, player)){
+            target = player;
+        }else{
+            for(let i = 0; i < combat.enemies.length; i++){
+                if(isOn(pointer, enemies[i])){
+                    target = enemies[i];
+                }
+            }
+        }
+
+        if(!combat.action(target.model, selectedCard.model)){
+            this.x = origX;
+            this.y = origY;
+            this.setScale(1.6,1.6);
+        }else{       
+            combat.discard.push(selectedCard.model);
+            console.log(target)
+            this.scene.tweens.add({
+                targets: target,
+                x: '-=10',
+                y: '-=10',
+                ease: 'Linear',
+                duration: 20,
+                repeat:10,
+                yoyo: true
+            });
+        }
+    }
+})
