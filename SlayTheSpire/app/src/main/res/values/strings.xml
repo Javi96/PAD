@@ -3,4 +3,24 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_login2">LoginActivity2</string>
     <string name="title_activity_signup">SignupActivity</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_login_singup">LoginSingupActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login_sign">LoginSignActivity</string>
+    <string name="title_activity_login_signup">LoginSignupActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="not_an_account_yet_swipe_right_to_sign_up">Not an account yet? Swipe right to sign up</string>
+    <string name="or">or</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="already_a_member_swipe_left_to_login">Already a member? Swipe left to login</string>
+    <string name="name">Name</string>
+    <string name="create_account">Create Account</string>
 </resources>
