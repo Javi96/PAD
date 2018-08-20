@@ -1,6 +1,7 @@
 package com.pad.slaythespire;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -101,6 +102,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             case R.id.login:
                 Toast.makeText(this.getActivity(), "login", Toast.LENGTH_LONG).show();
                 Log.i("------------------", "login");
+                Intent intent = new Intent(this.getActivity(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
         }
     }
 

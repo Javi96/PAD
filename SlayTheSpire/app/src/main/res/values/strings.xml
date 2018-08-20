@@ -23,4 +23,6 @@
     <string name="already_a_member_swipe_left_to_login">Already a member? Swipe left to login</string>
     <string name="name">Name</string>
     <string name="create_account">Create Account</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_cards"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="cards" />
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="home" />
+    <item
+        android:id="@+id/nav_friends"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="friends" />
+    <item
+        android:id="@+id/nav_options"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="options" />
+    <item
+        android:id="@+id/nav_shop"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="shop" />
+</menu>
