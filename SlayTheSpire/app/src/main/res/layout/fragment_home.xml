@@ -27,7 +27,7 @@
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="382dp"
-        android:layout_height="211dp"
+        android:layout_height="210dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -37,7 +37,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_bar2" />
+        app:layout_constraintTop_toBottomOf="@+id/info_bar2">
+
+    </ImageView>
+
+
+    <TextView
+        android:id="@+id/player_name4"
+        android:layout_width="347dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="72dp"
+        android:fontFamily="@font/kreon"
+        android:text="El útimo soldado restante de los Blindados. Vendió su alma para aprobechar energías demoníacas"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+        app:layout_constraintEnd_toEndOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toBottomOf="@+id/player_name2"
+        app:layout_constraintVertical_bias="0.208" />
+
+    <TextView
+        android:id="@+id/player_gold"
+        android:layout_width="52dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/kreon"
+        android:text="Gold: 99"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="0.007"
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/player_name" />
 
     <Button
         android:id="@+id/imageView8"
@@ -51,5 +86,75 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+    <TextView
+        android:id="@+id/player_name"
+        android:layout_width="52dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="284dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/kreon"
+        android:text="PV: 80/80"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView7"
+        app:layout_constraintTop_toBottomOf="@+id/player_name2" />
+
+    <TextView
+        android:id="@+id/player_name2"
+        android:layout_width="0dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/kreon"
+        android:text="El Blindado"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/player_name"
+        app:layout_constraintEnd_toEndOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:layout_constraintVertical_bias="0.007"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <TextView
+        android:id="@+id/player_name5"
+        android:layout_width="318dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/kreon"
+        android:text="Pipo"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/info_bar2"
+        app:layout_constraintEnd_toEndOf="@+id/info_bar2"
+        app:layout_constraintStart_toStartOf="@+id/info_bar2"
+        app:layout_constraintTop_toTopOf="@+id/info_bar2"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="20dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/gold"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="20dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/heart"
+        app:layout_constraintEnd_toStartOf="@+id/player_name"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toBottomOf="@+id/player_name2" />
 
 </android.support.constraint.ConstraintLayout>
