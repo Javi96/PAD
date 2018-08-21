@@ -19,7 +19,9 @@
         android:icon="@android:drawable/btn_star_big_on"
         android:title="friends" />
     <item
-        android:id="@+id/nav_options"
-        android:icon="@android:drawable/btn_star_big_on"
-        android:title="options" />
+        android:id="@+id/nav_help"
+        android:icon="@drawable/help_nav_bar"
+        android:title="help"
+        android:visible="true" />
+
 </menu>

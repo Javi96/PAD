@@ -11,13 +11,11 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/nav_bar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         app:menu="@menu/nav_items"
-        app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"/>
+        android:background="@drawable/nav_bar"/>
 
     <FrameLayout
         android:id="@+id/main_layout"
@@ -25,8 +23,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/nav_bar"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/black_overlay">
+        android:layout_alignParentTop="true">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/container"

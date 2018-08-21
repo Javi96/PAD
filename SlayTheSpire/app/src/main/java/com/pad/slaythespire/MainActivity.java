@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity{
                     case R.id.nav_home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_layout, homeFragment).commit();
                         break;
-                    case R.id.nav_options:
+                    case R.id.nav_help:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_layout, optionFragment).commit();
                         break;
                     case R.id.nav_shop:
