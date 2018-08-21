@@ -8,4 +8,6 @@
 
     <color name="colorWhite">#ffffff</color>
     <color name="colorWhiteTransparent">#80ffffff</color>
+    <color name="icon">#242222</color>
+    <color name="back">#5A5655</color>
 </resources>

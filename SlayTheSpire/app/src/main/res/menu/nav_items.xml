@@ -7,6 +7,10 @@
         android:icon="@android:drawable/btn_star_big_on"
         android:title="cards" />
     <item
+        android:id="@+id/nav_shop"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="shop" />
+    <item
         android:id="@+id/nav_home"
         android:icon="@android:drawable/btn_star_big_on"
         android:title="home" />
@@ -18,8 +22,4 @@
         android:id="@+id/nav_options"
         android:icon="@android:drawable/btn_star_big_on"
         android:title="options" />
-    <item
-        android:id="@+id/nav_shop"
-        android:icon="@android:drawable/btn_star_big_on"
-        android:title="shop" />
 </menu>
