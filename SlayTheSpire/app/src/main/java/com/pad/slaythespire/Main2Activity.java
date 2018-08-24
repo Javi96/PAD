@@ -63,8 +63,8 @@ public class Main2Activity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        navigationView = findViewById(R.id.nav_bar);
-        navigationView.setSelectedItemId(R.id.nav_home);
+        //navigationView = findViewById(R.id.nav_bar);
+        //navigationView.setSelectedItemId(R.id.nav_home);
 
 
     }
