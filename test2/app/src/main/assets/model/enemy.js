@@ -36,5 +36,5 @@ Enemy.prototype.attack2 = function(){
 }
 
 Enemy.prototype.selectAttack = function(){
-    this.nextAttack = this.attackList[1];
+    this.nextAttack = this.attackList[0];
 }

@@ -3,14 +3,16 @@ var size = (window.devicePixelRatio || 1);
 var config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 1920,
-    height: 1080,
+    width: 1920 / size,
+    height: 1080 / size,
     scene: [
+        MapScene,
         CombatScene,
         LoseCombatScene
+        
     ]
-    
 }
+
 const game = new Phaser.Game(config);
 var combat;
 var player;
@@ -18,6 +20,8 @@ var enemies = [];
 var selectedCard;
 var emmiter;
 var hand = [];
+
+var mapModel = new Map();
 
 var discardDeck;
 var mainDeck;

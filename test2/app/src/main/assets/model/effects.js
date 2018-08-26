@@ -2,6 +2,7 @@ var returnDmgEffect = function(dmg){
     this.name = "returnDmg"
     this.duration = 3;
     this.dmg = dmg;
+    this.effectTarget = "startCombat";
 }
 
 
@@ -14,9 +15,10 @@ var returnDmgEffect = function(dmg){
 
 returnDmgEffect.prototype.apply = function(target, dealer){
     dealer.hp -= this.dmg;
-
 }
-
+returnDmgEffect.prototype.manage = function(effect){
+    this.dmg += effect.dmg;
+}
 
 var discardHandEffect = function(){
     this.name = "discardHand"

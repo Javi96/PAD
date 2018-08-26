@@ -118,12 +118,12 @@ var CombatScene = new Phaser.Class({
         }
         if(combat.player.hp <= 0){
             endResult = "YOU LOSE!";
-            this.scene.start('LoseCombatScene');
+            this.scene.start('MapScene');
             //console.log("El jugador ha perdido");
             
         } else if(!alive){
             endResult = "YOU WIN!";
-            this.scene.start('LoseCombatScene');
+            this.scene.start('MapScene');
             //console.log("el jugador ha ganado")
         }
     }
@@ -167,26 +167,6 @@ function renderHand(scene){
         scene.input.setDraggable(hand[i]);
     }
 }
-  
-/*var fS =12
-function showCard(pos, card, f){
-
-    var bg = f.add.image(0, 0, card.name);
-
-    var desc = f.add.text(-50, 40, function(card){    
-        return card.descripcion;
-    }(card), {fontSize: fS});
-    var name = f.add.text(-20, -95, card.name, {fontSize: fS});
-    var ty = f.add.text(-10, 10, card.type, {fontSize: fS*0.6, color: '#000000'});
-    var cost = f.add.text(-75, -105, card.cost, {fontSize: fS*1.5, fontStyle: 'bold', color: '#000000'});
-
-
-    var carta = f.add.container(pos.x, pos.y, [ bg, desc, name, ty , cost]);
-    //ZONA EN LA QUE SE INTERACTUA CON EL CONTAINER
-    carta.setInteractive(new Phaser.Geom.Rectangle(-bg.width/2, -bg.height/2, bg.width, bg.height), Phaser.Geom.Rectangle.Contains);
-    f.input.setDraggable(carta);
-    return carta;
-}*/
 
 function onStartHandler (tweenEnding, targets, gameObject){
     gameObject.setAlpha(1);

@@ -6,7 +6,7 @@ var LoseCombatScene = new Phaser.Class({
         Phaser.Scene.call(this, {key: 'LoseCombatScene'})
     },
     preload: function(){
-
+        
         this.load.image("end", "view/img/end.jpg");
     },
 

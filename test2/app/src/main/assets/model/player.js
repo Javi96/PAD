@@ -23,3 +23,36 @@ Player.prototype.receiveAttack = function(dealer, dmg){
 Player.prototype.makeAttack = function(target, dmg){
     target.receiveAttack(this, dmg + this.strenght);
 }
+
+Player.prototype.addEffect = function(effect){
+    targetEffect = null;
+    switch(effect.effectTarget){
+        case "startCombat":
+            targetEffect = this.startCombatEffects;
+            break;
+        case "startCombat":
+            targetEffect = this.startTurnEffects;
+            break;
+        case "startCombat":
+            targetEffect = this.playCardEffects;
+            break;
+        case "startCombat":
+            targetEffect = this.endTurnEffects;
+            break;
+        case "receiveAttack":
+            targetEffect = this.receiveAttackEffects
+            break;
+        default:
+            console.log("error este efecto no deberia existir")
+    }
+    found = false;
+    for(eff of targetEffect){
+        if(eff.name == effect.name){
+            eff.manage(effect);
+            found = true;
+            break;
+        }
+    }
+    if(!found)
+        targetEffect.push(effect);
+}

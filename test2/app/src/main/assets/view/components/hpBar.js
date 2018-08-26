@@ -6,7 +6,7 @@ var HpBar = new Phaser.Class({
         
         var rect = new Phaser.Geom.Rectangle(x, y, w, h);
 
-        var graphics = scene.add.graphics({ fillStyle: { color: 0x0000ff } });
+        let graphics = scene.add.graphics({ fillStyle: { color: 0x0000ff } });
 
         graphics.fillRectShape(rect);
 
