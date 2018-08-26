@@ -41,6 +41,7 @@ var MapScene = new Phaser.Class({
                     x2 = (1920 - 2 * offsetX)/mapModel.map.length * (i + 1) + offsetX;
                     y2 = (1080 - 2 * offsetY)/nextLayer.length * layer[j].right.id + offsetY;
                     let line = new Phaser.Geom.Line(x1, y1, x2, y2);
+                    
                     graphics.lineStyle(3, 0x00aa00);
                     graphics.strokeLineShape(line);
                 }
