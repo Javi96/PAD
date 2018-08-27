@@ -15,35 +15,35 @@ var MapScene = new Phaser.Class({
     create:function(){
         window.addEventListener('resize', resize);
         resize();
-    
         this.add.image(1920/2, 1080/2, "bg_map");
 
         var graphics = this.add.graphics();
 
+       
+
         let offsetX = 100;
         let offsetY = 100;
+
         for(i = 0; i < mapModel.map.length; i++){
             let layer = mapModel.map[i];
             let nextLayer = mapModel.map[i + 1]
             for(let j = 0; j < layer.length; j++){
                 x1 = (1920 - 2 * offsetX)/mapModel.map.length * i + offsetX
-                y1 = (1080 - 2 * offsetY)/layer.length * j  + offsetY
-                new Token_map(this, x1, y1, "enemy_map");
+                y1 = (1080 - 2 * offsetY)/layer.length * j  + offsetY;
+                let t = new Token_map(this, x1, y1, "enemy_map");
+                if(!layer[j].activate)
+                    t.alpha = 0.8;
+                
                 if(layer[j].left){
                     x2 = (1920 - 2 * offsetX)/mapModel.map.length * (i + 1) + offsetX;
-                    y2 = (1080 - 2 * offsetY)/nextLayer.length * layer[j].left.id  + offsetY;
-                   
-                    let line = new Phaser.Geom.Line(x1, y1, x2, y2);
-                    graphics.lineStyle(3, 0x00aa00);
-                    graphics.strokeLineShape(line);
+                    y2 = (1080 - 2 * offsetY)/nextLayer.length * layer[j].left.id + offsetY;
+                    this.printPath(x1, y1, x2, y2, graphics);
                 }
                 if(layer[j].right){
                     x2 = (1920 - 2 * offsetX)/mapModel.map.length * (i + 1) + offsetX;
                     y2 = (1080 - 2 * offsetY)/nextLayer.length * layer[j].right.id + offsetY;
-                    let line = new Phaser.Geom.Line(x1, y1, x2, y2);
+                    this.printPath(x1, y1, x2, y2, graphics);
                     
-                    graphics.lineStyle(3, 0x00aa00);
-                    graphics.strokeLineShape(line);
                 }
             }
         }
@@ -56,4 +56,39 @@ var MapScene = new Phaser.Class({
 
 
     },
+    printPath: function(x1, y1, x2, y2, graphics){
+        slicePiece = 40;
+        sliceJump = 10;
+        
+        //let line = new Phaser.Geom.Line(x1, y1, x2, y2);
+        let size = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        let vx = (x2 - x1) / size;
+        let vy = (y2 - y1) / size;
+        
+        graphics.lineStyle(12, 0xeeeeee);
+        graphics.beginPath();
+        
+        let contadorX = 0;
+        let contadorY = 0;
+
+        for(k = 0; k < Math.floor(size/(sliceJump + slicePiece)); k ++){
+            
+            graphics.moveTo(x1 + contadorX, y1 + contadorY );
+            contadorX += (slicePiece * vx)
+            contadorY += (slicePiece * vy)
+            graphics.lineTo(x1 + contadorX , y1 + contadorY);
+            contadorX += (sliceJump * vx);
+            contadorY += (sliceJump * vy);
+        }
+        aux = size / (sliceJump + slicePiece) -  Math.floor(size/(sliceJump + slicePiece)) - sliceJump;
+
+        if(aux > 0){
+            graphics.moveTo(x1 + contadorX, y1 + contadorY );
+            contadorX += (slicePiece * vx)
+            contadorY += (slicePiece * vy)
+            graphics.lineTo(x1 + contadorX , y1 + contadorY);
+        }
+        
+        graphics.strokePath();
+    }
 })

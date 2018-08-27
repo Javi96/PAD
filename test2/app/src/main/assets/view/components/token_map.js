@@ -6,7 +6,8 @@ var Token_map= new Phaser.Class({
         this.setTexture(kind);
         this.setPosition(x, y);
         this.setInteractive()
-        this.setScale(1.5, 1.5);
+        this.setScale(2.5, 2.5);
+        
         this.kind = kind;
         scene.children.add(this);
     },
