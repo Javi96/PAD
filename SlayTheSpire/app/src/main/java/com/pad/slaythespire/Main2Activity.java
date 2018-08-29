@@ -40,6 +40,7 @@ public class Main2Activity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+
     private BottomNavigationView navigationView;
 
     @Override
@@ -65,6 +66,7 @@ public class Main2Activity extends AppCompatActivity {
 
         //navigationView = findViewById(R.id.nav_bar);
         //navigationView.setSelectedItemId(R.id.nav_home);
+
 
 
     }
@@ -99,6 +101,9 @@ public class Main2Activity extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
+
+        private CardFragment cardFragment;
+
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
@@ -117,6 +122,12 @@ public class Main2Activity extends AppCompatActivity {
                 case 2:
                     fragment = new CardFragment();
                     break;
+                case 3:
+                    fragment = new FriendFragment();
+                    break;
+                case 4:
+                    fragment = new ClassificationFragment();
+                    break;
             }
             return fragment;
         }
@@ -127,6 +138,7 @@ public class Main2Activity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            this.cardFragment = new CardFragment();
             return rootView;
         }
     }
@@ -151,7 +163,7 @@ public class Main2Activity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 4;
         }
     }
 }

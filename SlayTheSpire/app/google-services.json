@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "724632861906-e893q1u1cb57kg3t0ucb90p9gb4jnhti.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pad.slaythespire",
+            "certificate_hash": "5edb0b0cef025b7befbf4e9fd5eaf96ab910b1d7"
+          }
+        },
+        {
           "client_id": "724632861906-n8or69j171lvd9lof5o431vh29s1g2hd.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -24,7 +24,13 @@
         <activity
             android:name=".LoginSignupActivity"
             android:label="@string/title_activity_login_signup"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -33,11 +39,7 @@
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -46,7 +48,10 @@
 
         <activity
             android:name=".FriendRequestActivity"
-            android:label="@string/title_activity_friend_request"></activity>
+            android:label="@string/title_activity_friend_request" />
+        <activity
+            android:name=".CardActivity"
+            android:label="@string/title_activity_card"></activity>
     </application>
 
 </manifest>

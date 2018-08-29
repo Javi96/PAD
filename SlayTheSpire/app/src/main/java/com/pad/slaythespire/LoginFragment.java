@@ -4,12 +4,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -25,7 +46,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
+    private static int RC_SIGN_IN = 100;
+    private static String TAG = "INFO";
+
+    private FirebaseAuth mAuth;
+
+    private GoogleSignInClient client;
+    private GoogleSignInOptions options;
+    private GoogleSignInAccount account;
+    private SignInButton signInButton;
+    private Button loginButton;
+    private EditText inputEmail;
+    private EditText inputPassword;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -68,8 +103,32 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        this.options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        this.client = GoogleSignIn.getClient(this.getActivity(), options);
+        loginButton = view.findViewById(R.id.login);
+        signInButton = view.findViewById(R.id.sign_in_button);
+        inputEmail = view.findViewById(R.id.input_email);
+        inputPassword = view.findViewById(R.id.input_password);
         view.findViewById(R.id.login).setOnClickListener(this);
+        view.findViewById(R.id.sign_in_button).setOnClickListener(this);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.account = GoogleSignIn.getLastSignedInAccount(this.getActivity());
+        if(account!=null){
+            this.handleLastSignedInAccount(this.account);
+        }
+    }
+
+    private void handleLastSignedInAccount(GoogleSignInAccount account) {
+        Log.i(TAG, "Last singed account");
+        Log.i(TAG, "Name: " + this.account.getDisplayName());
+        Log.i(TAG, "Email: " + this.account.getEmail());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -78,6 +137,62 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             mListener.onFragmentInteraction(uri);
         }
     }
+
+
+    private void signIn() {
+        Intent signInIntent = client.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            int statusCode = result.getStatus().getStatusCode();
+            Log.w(TAG, "Status code: " + statusCode);
+            Log.v(TAG, "Account: " + result.getSignInAccount());
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                handleSignInResult(task);
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) throws ApiException {
+        //try {
+            this.account = completedTask.getResult(ApiException.class);
+            Log.v(TAG, "Name: " + this.account.getDisplayName());
+            Log.v(TAG, "Email: " + this.account.getEmail());
+            Intent intent = new Intent(this.getActivity(), Main2Activity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            //updateUI(account);
+        /*} catch (ApiException e) {
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            switch(e.getStatusCode()){
+                case GoogleSignInStatusCodes.SIGN_IN_REQUIRED:
+                    break;
+                case GoogleSignInStatusCodes.NETWORK_ERROR:
+                    break;
+                case GoogleSignInStatusCodes.INVALID_ACCOUNT:
+                    break;
+                case GoogleSignInStatusCodes.INTERNAL_ERROR:
+                    break;
+            }*/
+            //updateUI(null);
+        //}
+    }
+
+
+
+
+
+
 
     @Override
     public void onAttach(Context context) {
@@ -102,11 +217,48 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             case R.id.login:
                 Toast.makeText(this.getActivity(), "login", Toast.LENGTH_LONG).show();
                 Log.i("------------------", "login");
-                Intent intent = new Intent(this.getActivity(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                login();
+                break;
 
+            case R.id.sign_in_button:
+                Toast.makeText(this.getActivity(), "sign_in_button", Toast.LENGTH_LONG).show();
+                signIn();
+                break;
         }
+    }
+
+    private void login() {
+        String email = inputEmail.getText().toString();
+        String password = inputPassword.getText().toString();
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        if (matcher.find()) {
+            Log.e("PATTERN____________", "CORRECT");
+            /*Intent intent = new Intent(this.getActivity(), Main2Activity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);*/
+
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                //Toast.makeText(this.getClass(), "Authentication failed.",Toast.LENGTH_SHORT).show();
+                                updateUI(null);
+                            }
+                        }
+                    });
+        }
+
+    }
+
+    private void updateUI(Object o) {
     }
 
 
