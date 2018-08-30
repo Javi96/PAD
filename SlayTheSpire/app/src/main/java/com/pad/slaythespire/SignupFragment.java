@@ -3,11 +3,21 @@ package com.pad.slaythespire;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 /**
@@ -24,15 +34,20 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static String TAG = "INFO";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    private EditText email;
-    private EditText password;
-    private EditText name;
+    private FirebaseAuth mAuth;
+
+    private EditText signUpEmail;
+    private EditText signUpName;
+    private EditText signUpPass;
+    private Button signUpButton;
 
     public SignupFragment() {
         // Required empty public constructor
@@ -69,10 +84,14 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
-        view.findViewById(R.id.btn_signup).setOnClickListener(this);
-        this.email=view.findViewById(R.id.input_email);
-        this.password = view.findViewWithTag(R.id.input_password);
-        this.name = view.findViewById(R.id.input_name);
+        signUpEmail = view.findViewById(R.id.signup_input_email);
+        signUpPass = view.findViewById(R.id.signup_input_password);
+        signUpName = view.findViewById(R.id.signup_input_name);
+        signUpButton = view.findViewById(R.id.signup);
+        mAuth = FirebaseAuth.getInstance();
+        view.findViewById(R.id.signup).setOnClickListener(this);
+
+
         return view;
     }
 
@@ -103,11 +122,38 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.btn_signup:
-                String name = this.name.getText().toString();
-                String email = this.email.getText().toString();
-                String password = this.password.getText().toString();
+            case R.id.signup:
+                Toast.makeText(this.getActivity(), "signUp firebase", Toast.LENGTH_LONG).show();
+                signUp();
+                break;
         }
+    }
+
+    private void signUp() {
+        String email = signUpEmail.getText().toString();
+        String name = signUpName.getText().toString();
+        String password = signUpPass.getText().toString();
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            //updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(getActivity(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            //updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
     }
 
     /**

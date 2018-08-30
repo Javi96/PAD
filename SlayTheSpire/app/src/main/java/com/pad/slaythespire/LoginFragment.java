@@ -61,6 +61,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private Button loginButton;
     private EditText inputEmail;
     private EditText inputPassword;
+
+
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -111,8 +114,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         signInButton = view.findViewById(R.id.sign_in_button);
         inputEmail = view.findViewById(R.id.input_email);
         inputPassword = view.findViewById(R.id.input_password);
+
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
         return view;
     }
 
@@ -139,11 +145,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    private void signIn() {
-        Intent signInIntent = client.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
 
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -221,42 +223,65 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.sign_in_button:
-                Toast.makeText(this.getActivity(), "sign_in_button", Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getActivity(), "signIn google", Toast.LENGTH_LONG).show();
                 signIn();
                 break;
+
+
+
         }
     }
+
+
 
     private void login() {
         String email = inputEmail.getText().toString();
         String password = inputPassword.getText().toString();
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        if (matcher.find()) {
-            Log.e("PATTERN____________", "CORRECT");
-            /*Intent intent = new Intent(this.getActivity(), Main2Activity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);*/
+        /*Intent intent = new Intent(this.getActivity(), Main2Activity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);*/
 
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if(user==null) {
+                                /*Log.e("NOMBRE_____", user.getDisplayName());
+                                Log.e("TLF________", user.getPhoneNumber());
+                                Log.e("EMAIL______", user.getEmail());*/
+                                Log.e("ERROR", "NULL");
+
                                 updateUI(user);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                //Toast.makeText(this.getClass(), "Authentication failed.",Toast.LENGTH_SHORT).show();
-                                updateUI(null);
+                            }else {
+                                Log.i(TAG, user.getEmail());
+                                Intent intent = new Intent(getActivity(), Main2Activity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
                             }
+
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            //Toast.makeText(this.getClass(), "Authentication failed.",Toast.LENGTH_SHORT).show();
+                            updateUI(null);
                         }
-                    });
-        }
+                    }
+                });
+
 
     }
+
+    private void signIn() {
+        Intent signInIntent = client.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
 
     private void updateUI(Object o) {
     }
