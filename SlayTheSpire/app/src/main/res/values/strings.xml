@@ -27,4 +27,6 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_friend_request">FriendRequestActivity</string>
     <string name="title_activity_card">Card</string>
+    <string name="phone">Phone</string>
+    <string name="you_already_have_an_account_swipe_left_to_sign_in">You already have an account? Swipe left to sign in.</string>
 </resources>

@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 
 /**
@@ -43,6 +46,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     private OnFragmentInteractionListener mListener;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     private EditText signUpEmail;
     private EditText signUpName;
@@ -89,6 +93,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         signUpName = view.findViewById(R.id.signup_input_name);
         signUpButton = view.findViewById(R.id.signup);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         view.findViewById(R.id.signup).setOnClickListener(this);
 
 
@@ -130,9 +136,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     }
 
     private void signUp() {
-        String email = signUpEmail.getText().toString();
-        String name = signUpName.getText().toString();
-        String password = signUpPass.getText().toString();
+        final String email = signUpEmail.getText().toString();
+        final String name = signUpName.getText().toString();
+        final String password = signUpPass.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -142,12 +148,17 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            User data = new User(name, email, password,0.0,0L,1L, "red", true);
+                            mDatabase.child("users").child(user.getUid()).setValue(data);
+
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            DynamicToast.makeError(getActivity(), "Error toast with duration", 10).show();
+
+                            /*Toast.makeText(getActivity(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();*/
                             //updateUI(null);
                         }
 

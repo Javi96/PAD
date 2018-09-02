@@ -47,7 +47,7 @@ public class ClassificationFragment extends Fragment {
 
 
         final ArrayList<String> dataList = new ArrayList<>();
-        for (int i=0; i<50; i++){
+        for (int i=0; i<4; i++){
             dataList.add("Dato:" + i);
         }
         View view = inflater.inflate(R.layout.fragment_classification, container, false);
