@@ -1,7 +1,7 @@
 var HpBar = new Phaser.Class({
     Extends: Phaser.GameObjects.Image,
     initialize:
-    function HpBar(scene, x, y, w, h, hp){
+    function HpBar(scene, x, y, w, h, hp, maxHP){
         Phaser.GameObjects.Image.call(this, scene);
         
         var rect = new Phaser.Geom.Rectangle(x, y, w, h);
@@ -12,7 +12,7 @@ var HpBar = new Phaser.Class({
 
         scene.children.add(this)
 
-        this.maxValue = hp;
+        this.maxValue = maxHP;
         this.actValue = hp;
 
         this.val = scene.add.text(x + w / 4, y + h / 4 , this.actValue + "/" + this.maxValue, {fontSize: 30, fontStyle: 'bold'});

@@ -7,6 +7,8 @@ var strike = {
     "type": "attack",
     "effects":[],
     "action": function(player, target, enemies){
+        if(!target)
+            return false;
         player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
         return true;
@@ -15,7 +17,7 @@ var strike = {
 
 var clash = {
     "name":"clash",
-    "cost": 50,
+    "cost": 0,
     "dmg": 6,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
@@ -26,8 +28,22 @@ var clash = {
                 return false;
             }
         }
-        player.makeAttack(player, this.dmg);
+        player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
+        return true;
+    }
+}
+
+var anger = {
+    "name":"anger",
+    "cost": 0,
+    "dmg": 4,
+    "descripcion": "Deal %dmg damage",
+    "type": "attack",
+    "effects":[],
+    "action": function(player, target, enemies){
+        player.makeAttack(target, this.dmg);
+        combat.deck.push(anger);
         return true;
     }
 }

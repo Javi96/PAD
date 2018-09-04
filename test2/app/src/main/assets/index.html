@@ -22,6 +22,8 @@
     <script src="model/player.js"></script>
     <script src="model/enemy.js"></script>
     <script src="model/cards.js"></script>
+    <script src="model/enemis.js"></script>
+
     <script src="model/effects.js"></script>
     <script src="model/map.js"></script>
     <script src="view/components/endTurn.js"></script>
@@ -35,10 +37,46 @@
     <script src="view/components/entity.js"></script>
     <script src="view/components/token_map.js"></script>
 
-    
+    <script>
+        var size = (window.devicePixelRatio || 1);
 
+        var config = {
+            type: Phaser.AUTO,
+            parent: 'phaser-example',
+            width: 1920 / size,
+            height: 1080 / size,
+            scene: [
+                MapScene,
+                CombatScene,
+                LoseCombatScene
+                
+            ]
+        }
 
-    <script src="view/combat.js"></script>
+        const game = new Phaser.Game(config);
+        var selectedCard;
+        var emmiter;
+        var combat;
+        var mapModel = new Map(6);
+        var player = new Player({
+            "hp" : 30,
+            "maxHP" : 30,
+            "mana" : 3,
+            "block" : 0,
+            "strenght" : 0,
+            "startCombatEffects" : [],
+            "startTurnEffects" : [],
+            "playCardEffects" : [],
+
+            "endTurnEffects" : [new discardHandEffect()],
+
+            "receiveAttackEffects" : [],
+        });
+
+        var ending;
+        var tweenEnding;
+        var endResult;
+    </script>
 </div>
 </body>
 

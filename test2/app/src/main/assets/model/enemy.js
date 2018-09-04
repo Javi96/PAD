@@ -1,6 +1,7 @@
 var Enemy = function(config){
     this.name = config.name;
     this.hp = config.hp;
+    this.maxHP = config.maxHP;
     this.block = config.block;
     this.startCombatEffects = config.startCombatEffects;
     this.startTurnEffects = config.startTurnEffects;
@@ -19,14 +20,25 @@ var Enemy = function(config){
     //@param dealer
     //@param dmg
 Enemy.prototype.receiveAttack = function(dealer, dmg){
-    this.hp -= dmg;
+    calculateDMG(dmg);
     for(e of this.receiveAttackEffects){
-        e.apply(this, dealer);
+        eval(e).apply(this, dealer);
+    }
+}
+
+Enemy.prototype.calculateDmg = function(dmg){
+    temp = this.block;
+    temp -= dmg;
+    if(tmp < 0){
+        this.block = 0;
+        this.hp += temp;
+    }else{
+        this.block -= dmg; 
     }
 }
 
 Enemy.prototype.attack1 = function(){
-    combat.player.receiveAttack(this, 4 + this.strenght);
+    player.receiveAttack(this, 4 + this.strenght);
     console.log("hare " + (4 + this.strenght) + " dmg" )
 }
 

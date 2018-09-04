@@ -6,14 +6,15 @@ var EndTurn = new Phaser.Class({
         this.setTexture('endTurn');
         this.setPosition(x, y);
         this.setInteractive();
+        this.scene = scene
         scene.children.add(this)
     },
     objectDown:function(pointer){
         combat.endTurn();
-        for(let h of hand){
+        for(let h of this.scene.hand){
             h.destroy();
         }
         combat.startTurn();
-        renderHand(this.scene);
+        this.scene.renderHand(this.scene);
     }
 })

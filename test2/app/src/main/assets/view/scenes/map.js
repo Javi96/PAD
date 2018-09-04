@@ -2,24 +2,23 @@ var MapScene = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize:
     function MapScene(params){
-        Phaser.Scene.call(this, {key: 'MapScene'})
-        combat = new Combat();
-        console.log("inicializacion")
+        Phaser.Scene.call(this, {key: 'MapScene'});
     },
     preload: function(){
         this.load.image("bg_map", "view/img/bg_map.jpg");
-        this.load.image("enemy_map", "view/img/enemy_map.png");
-        console.log("preload")
+        this.load.image("combat_map", "view/img/enemy_map.png");
+        this.load.image("boss_map", "view/img/enemy_map.png")
+
     },
 
     create:function(){
         window.addEventListener('resize', resize);
         resize();
+        //console.log(combat);
         this.add.image(1920/2, 1080/2, "bg_map");
 
         var graphics = this.add.graphics();
 
-       
 
         let offsetX = 100;
         let offsetY = 100;
@@ -28,10 +27,13 @@ var MapScene = new Phaser.Class({
             let layer = mapModel.map[i];
             let nextLayer = mapModel.map[i + 1]
             for(let j = 0; j < layer.length; j++){
+                let node = layer[j];
+                
                 x1 = (1920 - 2 * offsetX)/mapModel.map.length * i + offsetX
                 y1 = (1080 - 2 * offsetY)/layer.length * j  + offsetY;
-                let t = new Token_map(this, x1, y1, "enemy_map");
-                if(!layer[j].activate)
+
+                let t = new Token_map(this, x1, y1, node.type + "_map");
+                if(!j.activate)
                     t.alpha = 0.8;
                 
                 if(layer[j].left){
@@ -50,8 +52,16 @@ var MapScene = new Phaser.Class({
         //token = new Token_map(this, 1920/2, 1080/2, "enemy_map");
         var s = this.scene;
         this.input.on("gameobjectdown", function(pointer, gameObject){
-            console.log(gameObject.kind);
-            s.start('CombatScene');
+            g = Math.floor(Math.random() * enemisJSON.length)
+            console.log(g)
+            console.log(enemisJSON[g])
+            enemy = [new Enemy(enemisJSON[g])];
+            
+            combat = new Combat([strike, anger], enemy);
+            console.log("map")
+            console.log(combat.deck);
+            s.start("CombatScene");
+            
         })
 
 

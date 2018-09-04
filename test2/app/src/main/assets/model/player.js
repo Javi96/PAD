@@ -1,5 +1,6 @@
 var Player = function(config){
     this.hp = config.hp;
+    this.maxHP = config.maxHP;
     this.deck = [];
     this.mana = config.mana;
     this.block = config.block;
@@ -14,12 +15,22 @@ var Player = function(config){
     this.receiveAttackEffects = config.receiveAttackEffects;
 }
 Player.prototype.receiveAttack = function(dealer, dmg){
-    this.hp -= dmg;
+    this.calculateDmg(dmg);
+    
     for(let e of this.receiveAttackEffects){
         e.apply(this, dealer);
     }
 }
-
+Player.prototype.calculateDmg = function(dmg){
+    temp = this.block;
+    temp -= dmg;
+    if(tmp < 0){
+        this.block = 0;
+        this.hp += temp;
+    }else{
+        this.block -= dmg; 
+    }
+}
 Player.prototype.makeAttack = function(target, dmg){
     target.receiveAttack(this, dmg + this.strenght);
 }

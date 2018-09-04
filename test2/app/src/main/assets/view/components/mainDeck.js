@@ -10,6 +10,6 @@ var MainDeck = new Phaser.Class({
         scene.children.add(this)
     },
     objectDown:function(pointer){
-        console.log("mostrarDeck")
+        console.log(combat.deck)
     }
 })
