@@ -23,7 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-public class Main2Activity extends AppCompatActivity {
+public class Main2Activity extends AppCompatActivity implements View.OnClickListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -67,8 +67,12 @@ public class Main2Activity extends AppCompatActivity {
         //navigationView = findViewById(R.id.nav_bar);
         //navigationView.setSelectedItemId(R.id.nav_home);
 
-
-
+        mViewPager.setCurrentItem(3);
+        findViewById(R.id.icon_card).setOnClickListener(this);
+        findViewById(R.id.icon_friend).setOnClickListener(this);
+        findViewById(R.id.icon_battle).setOnClickListener(this);
+        findViewById(R.id.icon_classification).setOnClickListener(this);
+        findViewById(R.id.icon_info).setOnClickListener(this);
     }
 
     @Override
@@ -93,6 +97,27 @@ public class Main2Activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.icon_card:
+                mViewPager.setCurrentItem(0,true);
+                break;
+            case R.id.icon_friend:
+                mViewPager.setCurrentItem(1,true);
+                break;
+            case R.id.icon_battle:
+                mViewPager.setCurrentItem(2,true);
+                break;
+            case R.id.icon_classification:
+                mViewPager.setCurrentItem(3,true);
+                break;
+            case R.id.icon_info:
+                mViewPager.setCurrentItem(4,true);
+                break;
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -102,7 +127,6 @@ public class Main2Activity extends AppCompatActivity {
          * fragment.
          */
 
-        private CardFragment cardFragment;
 
         private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -117,16 +141,19 @@ public class Main2Activity extends AppCompatActivity {
             Fragment fragment = null;
             switch(sectionNumber){
                 case 1:
-                    fragment = new HomeFragment();
-                    break;
-                case 2:
                     fragment = new CardFragment();
                     break;
-                case 3:
+                case 2:
                     fragment = new FriendFragment();
+                    break;
+                case 3:
+                    fragment = new HomeFragment();
                     break;
                 case 4:
                     fragment = new ClassificationFragment();
+                    break;
+                case 5:
+                    fragment = new OptionFragment();
                     break;
             }
             return fragment;
@@ -138,7 +165,6 @@ public class Main2Activity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            this.cardFragment = new CardFragment();
             return rootView;
         }
     }
@@ -163,7 +189,7 @@ public class Main2Activity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 4;
+            return 5;
         }
     }
 }

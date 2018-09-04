@@ -59,40 +59,111 @@
         android:background="@drawable/table"
         android:weightSum="5">
 
-
-        <Button
-            android:id="@+id/card_icon"
+        <LinearLayout
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/card_icon"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/boss_icon"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="@drawable/boss_icon"/>
+            <Button
+                android:id="@+id/icon_card"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_cards" />
 
-        <Button
-            android:id="@+id/bosss_icon"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:background="@drawable/boss_icon"/>
+            <TextView
+                android:id="@+id/icon_card_text"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:fontFamily="@font/kreon"
+                android:text="Cards"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_orange_light" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/bossss_icon"
-            android:layout_width="0dp"
+        <LinearLayout
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="@drawable/boss_icon"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/bosssss_icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/icon_friend"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_friend" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:fontFamily="@font/kreon"
+                android:text="Friends"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_orange_light" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_weight="1"
-            android:background="@drawable/boss_icon"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/icon_battle"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_battle" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:fontFamily="@font/kreon"
+                android:text="Home"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_orange_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/icon_classification"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_classification" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:fontFamily="@font/kreon"
+                android:text="Ranking"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_orange_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/icon_info"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_info" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:fontFamily="@font/kreon"
+                android:text="Help"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_orange_light" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

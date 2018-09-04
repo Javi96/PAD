@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
 
 public class ClassificationAdapter
@@ -18,9 +20,11 @@ public class ClassificationAdapter
 
     private ArrayList<String> dataList;
     private View.OnClickListener listener;
+    private ArrayList<DataSnapshot> users;
 
-    public ClassificationAdapter(ArrayList<String> dataList) {
+    public ClassificationAdapter(ArrayList<String> dataList, ArrayList<DataSnapshot> users) {
         this.dataList = dataList;
+        this.users = users;
     }
 
     // enlaza el adaptador con la lista de items
@@ -35,13 +39,13 @@ public class ClassificationAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderClassification holder, int position) {
-        holder.assignData(dataList.get(position));
+        holder.assignData(users.get(position), position);
 
     }
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return users.size();
     }
 
     @Override
@@ -59,17 +63,20 @@ public class ClassificationAdapter
 
         TextView textView;
         ImageView imageView;
+        TextView rank;
 
         private CardView cardView;
 
         public ViewHolderClassification(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.card_template_name);
+            rank = itemView.findViewById(R.id.card_template_rank);
             //imageView = itemView.findViewById(R.id.card_template_image);
         }
 
-        public void assignData(String s) {
-            //textView.setText(s);
+        public void assignData(DataSnapshot s, int index) {
+            textView.setText(s.child("name").getValue().toString());
+            rank.setText(Integer.toString(index));
         }
     }
 }
