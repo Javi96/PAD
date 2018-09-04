@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignupFragment"
-    >
+    tools:context=".SignupFragment">
 
 
         <LinearLayout
@@ -18,22 +18,24 @@
             <!--  Name Label -->
 
             <android.support.design.widget.TextInputLayout
+                android:theme="@style/TextLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp">
 
                 <EditText
+                    android:textColor="#FFFFFF"
                     android:id="@+id/signup_input_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/name"
-                    android:inputType="textCapWords"
-                    android:textColor="@android:color/background_light" />
+                    android:inputType="textCapWords" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Email Label -->
             <android.support.design.widget.TextInputLayout
+                android:theme="@style/TextLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -41,15 +43,16 @@
 
                 <EditText
                     android:id="@+id/signup_input_email"
+                    android:textColor="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@android:color/background_light" />
+                    android:inputType="textEmailAddress"/>
             </android.support.design.widget.TextInputLayout>
 
             <!-- Password Label -->
             <android.support.design.widget.TextInputLayout
+                android:theme="@style/TextLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -57,16 +60,17 @@
 
                 <EditText
                     android:id="@+id/signup_input_password"
+                    android:textColor="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:inputType="textPassword"
-                    android:textColor="@android:color/background_light" />
+                    android:inputType="textPassword"/>
 
             </android.support.design.widget.TextInputLayout>
 
             <!-- Email Label -->
             <android.support.design.widget.TextInputLayout
+                android:theme="@style/TextLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -76,9 +80,9 @@
                     android:id="@+id/signup_input_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
                     android:hint="@string/phone"
-                    android:inputType="phone"
-                    android:textColor="@android:color/background_light" />
+                    android:inputType="phone" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Signup Button -->
@@ -104,17 +108,37 @@
                 android:textSize="12sp"
                 android:textStyle="italic" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/signup"
-                android:layout_width="fill_parent"
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="24dp"
-                android:padding="12dp"
-                android:text="@string/create_account" />
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/signup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/basic_button"
+                    android:padding="12dp"
+                    android:text="@string/create_account"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </android.support.constraint.ConstraintLayout>
 
             <TextView android:id="@+id/link_login"
                 android:layout_width="fill_parent"
+                android:textColor="#FFFFFF"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:text="@string/you_already_have_an_account_swipe_left_to_sign_in"
