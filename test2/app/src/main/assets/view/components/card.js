@@ -51,17 +51,18 @@ var Card= new Phaser.Class({
         this.y = dragY;
     },
     dragEnd:function (pointer, targets) {
-        target = targets[targets.length]
+        target = targets[targets.length - 1]
         for(t of targets)
             if(isOn(pointer, t)){
                 target = t;
                 break;
             }
 
-        if(!combat.action(target.model, selectedCard.model)){
+        targetPlayer = target == targets[targets.length - 1] && this.model.type == "attack"
+        if(targetPlayer || !combat.action(target.model, selectedCard.model)){
             this.x = origX;
             this.y = origY;
-            this.setScale(1.6,1.6);
+            this.setScale(1,1);
         }else{       
             combat.discard.push(selectedCard.model);
             let arr = combat.hand;

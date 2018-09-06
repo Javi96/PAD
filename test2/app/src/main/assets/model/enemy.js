@@ -20,7 +20,7 @@ var Enemy = function(config){
     //@param dealer
     //@param dmg
 Enemy.prototype.receiveAttack = function(dealer, dmg){
-    calculateDMG(dmg);
+    this.calculateDmg(dmg);
     for(e of this.receiveAttackEffects){
         eval(e).apply(this, dealer);
     }
@@ -29,7 +29,7 @@ Enemy.prototype.receiveAttack = function(dealer, dmg){
 Enemy.prototype.calculateDmg = function(dmg){
     temp = this.block;
     temp -= dmg;
-    if(tmp < 0){
+    if(temp < 0){
         this.block = 0;
         this.hp += temp;
     }else{

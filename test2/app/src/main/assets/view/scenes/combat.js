@@ -11,9 +11,6 @@ var CombatScene = new Phaser.Class({
         this.hand = [];
     },
     preload: function(){
-
-        
-
         this.load.image("bg", "view/img/bg.jpg");
 
         for(let i = 0; i < combat.enemies.length; i++){
@@ -126,28 +123,22 @@ var CombatScene = new Phaser.Class({
             endResult = "YOU LOSE!";
             
             
-            this.scene.start('loseCombatScene');
+            this.scene.start('LoseCombatScene');
             
             
         } else if(!alive){
-            endResult = "YOU WIN!";
-            this.restartCombat();
             combat.deck = combat.deck.concat(combat.hand)
             combat.hand = []
-            //console.log(combat)
             this.scene.start('MapScene');
             
         }
     },
-    restartCombat : function(){
-        
-    },
     renderHand: function(){
-        console.log(combat.hand.length)
         for(let i = 0; i < combat.hand.length; i++){
             this.hand.push(new Card(this, 400+i*200, 950, combat.hand[i]))
         }
     }
+    
 })
 
 

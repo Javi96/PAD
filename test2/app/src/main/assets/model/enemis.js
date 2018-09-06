@@ -5,7 +5,7 @@ var enemisJSON = [
         "hp" : 10,
         "maxHP" : 10,
         "strenght" : 0,
-        "block" : 0,
+        "block" : 1,
         "startCombatEffects" : [],
         "startTurnEffects" : [],
         "playCardEffects" : [],

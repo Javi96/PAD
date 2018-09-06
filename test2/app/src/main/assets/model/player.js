@@ -24,7 +24,7 @@ Player.prototype.receiveAttack = function(dealer, dmg){
 Player.prototype.calculateDmg = function(dmg){
     temp = this.block;
     temp -= dmg;
-    if(tmp < 0){
+    if(temp < 0){
         this.block = 0;
         this.hp += temp;
     }else{

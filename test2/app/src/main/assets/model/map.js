@@ -1,10 +1,11 @@
 var Map = function(layers){
+    this.clickedNodes = []
     this.map = [[]]
     lvlNodes = 0;
     this.layers = layers;
     //crea lvl 0
     for(i = 0; i < 4; i++){
-        this.map[0][i] = new StepNode(i,{type : "combat", activate: true});
+        this.map[0][i] = new StepNode(i,{type : "combat", activate: "yes"});
     }
     //crea 9 capas mas
     for(x = 1; x < this.layers; x++){
@@ -47,12 +48,32 @@ var Map = function(layers){
     for(let t of this.map[this.layers - 1]){
         t.left = this.map[this.layers][0];
     }
+
+    
+}
+
+Map.prototype.updateMap = function(node){
+    for(l of this.map)
+        for(n of l)
+            n.activate = "no";
+        
+    for(n of this.clickedNodes){
+        n.activate = "pas";
+        
+    }
+    node.activate = "pas";
+    if(node.left)
+        node.left.activate = "yes";
+    if(node.right)
+        node.right.activate = "yes";
+
+    this.clickedNodes.push(node);
 }
 
 var StepNode = function(id,config){
     this.id = id
     this.type = config.type || "combat";
-    this.activate = config.activate || false;
+    this.activate = config.activate || "no";
     left = null;
     rigth = null;
 }

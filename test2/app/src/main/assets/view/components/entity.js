@@ -9,7 +9,7 @@ var Entity = new Phaser.Class({
         this.setScale(0.7, 0.7);
         scene.children.add(this);
         this.model = entity;
-        this.hpBar = new HpBar(scene,  x - this.w, 650, 200, 50, entity.hp, entity.maxHP)
+        this.hpBar = new HpBar(scene,  x - this.w, 650, 200, 50, entity)
     },
    setHp:function() {
        this.hpBar.update(this.model.hp);

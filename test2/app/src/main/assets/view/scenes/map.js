@@ -32,10 +32,11 @@ var MapScene = new Phaser.Class({
                 x1 = (1920 - 2 * offsetX)/mapModel.map.length * i + offsetX
                 y1 = (1080 - 2 * offsetY)/layer.length * j  + offsetY;
 
-                let t = new Token_map(this, x1, y1, node.type + "_map");
-                if(!j.activate)
-                    t.alpha = 0.8;
-                
+                let t = new Token_map(this, x1, y1, node);
+                if(node.activate == "no")
+                    t.alpha = 0.4;
+                else 
+                    t.alpha = 1;
                 if(layer[j].left){
                     x2 = (1920 - 2 * offsetX)/mapModel.map.length * (i + 1) + offsetX;
                     y2 = (1080 - 2 * offsetY)/nextLayer.length * layer[j].left.id + offsetY;
@@ -52,16 +53,13 @@ var MapScene = new Phaser.Class({
         //token = new Token_map(this, 1920/2, 1080/2, "enemy_map");
         var s = this.scene;
         this.input.on("gameobjectdown", function(pointer, gameObject){
+            if(gameObject.node.activate == "no" || gameObject.node.activate == "pas" )
+                return;
             g = Math.floor(Math.random() * enemisJSON.length)
-            console.log(g)
-            console.log(enemisJSON[g])
+            mapModel.updateMap(gameObject.node);
             enemy = [new Enemy(enemisJSON[g])];
-            
-            combat = new Combat([strike, anger], enemy);
-            console.log("map")
-            console.log(combat.deck);
+            combat = new Combat(hand, enemy);
             s.start("CombatScene");
-            
         })
 
 
