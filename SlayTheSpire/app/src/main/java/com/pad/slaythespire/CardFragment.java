@@ -52,12 +52,16 @@ public class CardFragment extends Fragment {
     //int[] fruitImages = {R.drawable.armaments,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash};
     ArrayList<Integer> cards;
     ArrayList<String> cardsName;
+    CustomAdapter customAdapter;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        cards = new ArrayList<>();
+        cardsName = new ArrayList<>();
+        customAdapter = new CustomAdapter();
 
-        //finding listview
 
 
     }
@@ -67,9 +71,6 @@ public class CardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_card, container, false);
-
-        cards = new ArrayList<>();
-        cardsName = new ArrayList<>();
 
         try {
             BufferedReader r = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("cards.txt")));
@@ -113,7 +114,6 @@ public class CardFragment extends Fragment {
 
 
         gridView = view.findViewById(R.id.grid_layout);
-        CustomAdapter customAdapter = new CustomAdapter();
         gridView.setAdapter(customAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

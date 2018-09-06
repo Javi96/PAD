@@ -19,7 +19,11 @@ public class FriendAdapter
     private ArrayList<String> dataList;
     private View.OnClickListener listener;
 
-    public FriendAdapter(ArrayList<String> dataList) {
+    public FriendAdapter() {
+
+    }
+
+    public void setData(ArrayList<String> dataList){
         this.dataList = dataList;
     }
 

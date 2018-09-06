@@ -1,5 +1,6 @@
 package com.pad.slaythespire;
 
+import android.app.FragmentManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -22,9 +23,7 @@ public class ClassificationAdapter
     private View.OnClickListener listener;
     private ArrayList<DataSnapshot> users;
 
-    public ClassificationAdapter(ArrayList<String> dataList, ArrayList<DataSnapshot> users) {
-        this.dataList = dataList;
-        this.users = users;
+    public ClassificationAdapter() {
     }
 
     // enlaza el adaptador con la lista de items
@@ -55,28 +54,46 @@ public class ClassificationAdapter
         }
     }
 
+    public void addData(ArrayList<DataSnapshot> users){
+        this.users = users;
+    }
+
     public void setOnClickListener(View.OnClickListener listener){
         this.listener = listener;
     }
 
     public class ViewHolderClassification extends RecyclerView.ViewHolder {
 
-        TextView textView;
+        TextView name;
         ImageView imageView;
         TextView rank;
-
+        TextView level;
+        TextView matches;
+        TextView maxScore;
+        TextView friendRequest;
         private CardView cardView;
 
         public ViewHolderClassification(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.card_template_name);
+            name = itemView.findViewById(R.id.card_template_name);
             rank = itemView.findViewById(R.id.card_template_rank);
+            level = itemView.findViewById(R.id.card_template_level);
+            matches = itemView.findViewById(R.id.card_template_matches);
+            maxScore = itemView.findViewById(R.id.card_template_score);
+            friendRequest = itemView.findViewById(R.id.card_template_friend_request);
+
             //imageView = itemView.findViewById(R.id.card_template_image);
         }
 
         public void assignData(DataSnapshot s, int index) {
-            textView.setText(s.child("name").getValue().toString());
-            rank.setText(Integer.toString(index));
+            name.setText(s.child("name").getValue().toString());
+            rank.setText("Rank: " + Integer.toString(index));
+            level.setText("Lv:" + s.child("level").getValue().toString());
+            matches.setText("Matches: " + s.child("matches").getValue().toString());
+            maxScore.setText("Score: "+ s.child("points").getValue().toString());
+            if(s.child("protect").getValue().toString().equalsIgnoreCase("true")){
+                friendRequest.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

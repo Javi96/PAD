@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,7 +68,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //navigationView = findViewById(R.id.nav_bar);
         //navigationView.setSelectedItemId(R.id.nav_home);
 
-        mViewPager.setCurrentItem(3);
+        mViewPager.setCurrentItem(2);
         findViewById(R.id.icon_card).setOnClickListener(this);
         findViewById(R.id.icon_friend).setOnClickListener(this);
         findViewById(R.id.icon_battle).setOnClickListener(this);
@@ -75,45 +76,24 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.icon_info).setOnClickListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.icon_card:
-                mViewPager.setCurrentItem(0,true);
+                mViewPager.setCurrentItem(0);
                 break;
             case R.id.icon_friend:
-                mViewPager.setCurrentItem(1,true);
+                mViewPager.setCurrentItem(1);
                 break;
             case R.id.icon_battle:
-                mViewPager.setCurrentItem(2,true);
+                mViewPager.setCurrentItem(2);
                 break;
             case R.id.icon_classification:
-                mViewPager.setCurrentItem(3,true);
+                mViewPager.setCurrentItem(3);
                 break;
             case R.id.icon_info:
-                mViewPager.setCurrentItem(4,true);
+                mViewPager.setCurrentItem(4);
                 break;
         }
     }
@@ -128,6 +108,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
          */
 
 
+
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
@@ -138,23 +119,25 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
          * number.
          */
         public static Fragment newInstance(int sectionNumber) {
+            Log.e("section numbre", Integer.toString(sectionNumber));
             Fragment fragment = null;
             switch(sectionNumber){
-                case 1:
+                case 0:
                     fragment = new CardFragment();
                     break;
-                case 2:
+                case 1:
                     fragment = new FriendFragment();
                     break;
-                case 3:
+                case 2:
                     fragment = new HomeFragment();
                     break;
-                case 4:
+                case 3:
                     fragment = new ClassificationFragment();
                     break;
-                case 5:
+                case 4:
                     fragment = new OptionFragment();
                     break;
+                    default:break;
             }
             return fragment;
         }
@@ -163,8 +146,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }
@@ -183,7 +166,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position);
         }
 
         @Override
