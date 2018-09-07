@@ -22,7 +22,9 @@ var Enemy = function(config){
         this.startTurnEffects.push(eval(e));
     this.strength = config.strength;
 
-    this.attackList = [this.attack1, this.attack2];
+    this.attackList = config.attackList;
+    this.routine = config.routine;
+    this.turn = 0;
     this.selectedAttack;
     this.nextAttack = null;
 }
@@ -49,18 +51,9 @@ Enemy.prototype.calculateDmg = function(dmg){
     }
 }
 
-Enemy.prototype.attack1 = function(){
-    player.receiveAttack(this, 4 + this.strength);
-    console.log("hare " + (4 + this.strength) + " dmg" )
-}
-
-Enemy.prototype.attack2 = function(){
-    this.block += 5;
-    console.log("bloqueare " + 5 + "de dmg" )
-}
-
 Enemy.prototype.selectAttack = function(){
-    this.nextAttack = this.attackList[0];
+    this.nextAttack = this.attackList[this.routine(this.turn)];
+    this.turn++;
 }
 
 Enemy.prototype.addEffect = function(effect){

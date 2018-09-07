@@ -19,24 +19,23 @@ var Map = function(layers){
 
             if(rnd < 0.5){//create left
                 if(i == 0){
-                    nextLayer.push(new StepNode(nextLayer.length, {}));
+                    nextLayer.push(new StepNode(nextLayer.length, {"type":(Math.random() < 0.3) ? "camp" : "combat"}));
                     n.left = nextLayer[nextLayer.length - 1];
                 }else if(layer[i-1].right){
                     n.left = nextLayer[nextLayer.length - 1]
                 }else{
-                    nextLayer.push(new StepNode(nextLayer.length, {}));
+                    nextLayer.push(new StepNode(nextLayer.length, {"type":(Math.random() < 0.3) ? "camp" : "combat"}));
                     n.left = nextLayer[nextLayer.length - 1];
                 }
-
                 if(Math.random() < 0.15){
-                    nextLayer.push(new StepNode(nextLayer.length, {}));
+                    nextLayer.push(new StepNode(nextLayer.length, {"type":(Math.random() < 0.3) ? "camp" : "combat"}));
                     n.right = nextLayer[nextLayer.length - 1];
                 }
             }else{//create rigth
-                nextLayer.push(new StepNode(nextLayer.length, {}));
+                nextLayer.push(new StepNode(nextLayer.length, {"type":(Math.random() < 0.3) ? "camp" : "combat"}));
                 n.right = nextLayer[nextLayer.length - 1];
                 if(Math.random() < 0.15){
-                    nextLayer.push(new StepNode(nextLayer.length, {}));
+                    nextLayer.push(new StepNode(nextLayer.length, {"type":(Math.random() < 0.3) ? "camp" : "combat"}));
                     n.left = nextLayer[nextLayer.length - 1];
                 }
             }
@@ -44,7 +43,7 @@ var Map = function(layers){
     }
 
     this.map[this.layers] = []
-    this.map[this.layers][0] = new StepNode(0, {type:"boss"})
+    this.map[this.layers][0] = new StepNode(0, {})
     for(let t of this.map[this.layers - 1]){
         t.left = this.map[this.layers][0];
     }
@@ -74,6 +73,5 @@ var StepNode = function(id,config){
     this.id = id
     this.type = config.type || "combat";
     this.activate = config.activate || "no";
-    left = null;
-    rigth = null;
+    
 }

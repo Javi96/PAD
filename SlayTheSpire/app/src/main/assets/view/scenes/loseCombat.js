@@ -2,7 +2,6 @@ var LoseCombatScene = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize:
     function LoseCombat(params){
-        console.log("hola")
         Phaser.Scene.call(this, {key: 'LoseCombatScene'})
     },
     preload: function(){
