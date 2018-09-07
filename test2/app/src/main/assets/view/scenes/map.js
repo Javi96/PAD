@@ -3,10 +3,12 @@ var MapScene = new Phaser.Class({
     initialize:
     function MapScene(params){
         Phaser.Scene.call(this, {key: 'MapScene'});
+        lastNode = undefined;
     },
     preload: function(){
         this.load.image("bg_map", "view/img/bg_map.jpg");
         this.load.image("combat_map", "view/img/enemy_map.png");
+        this.load.image("camp_map", "view/img/assets/rest.png");
         this.load.image("boss_map", "view/img/enemy_map.png")
 
     },
@@ -55,6 +57,9 @@ var MapScene = new Phaser.Class({
         this.input.on("gameobjectdown", function(pointer, gameObject){
             if(gameObject.node.activate == "no" || gameObject.node.activate == "pas" )
                 return;
+            if(gameObject.node.type == "camp"){
+                s.start("RestScene");
+            }
             g = Math.floor(Math.random() * enemisJSON.length)
             mapModel.updateMap(gameObject.node);
             enemy = [new Enemy(enemisJSON[g])];

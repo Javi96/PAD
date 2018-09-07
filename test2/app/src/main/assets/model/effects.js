@@ -66,6 +66,25 @@ attackGainBlockEffect.prototype.getText = function(){
     return this.block;
 }
 
+var gainBlockEffect = function(block, duration){
+    this.name = "attackGainBlock"
+    this.duration = duration || -1;
+    this.block = block;
+    this.effectTarget = "startTurn";
+}
+
+gainBlockEffect.prototype.apply = function(source){
+    source.getBlock(this.block)
+}
+
+gainBlockEffect.prototype.manage = function(effect){
+    this.duration += effect.duration;
+}
+gainBlockEffect.prototype.getText = function(){
+    return this.block;
+}
+
+
 
 var gainStrengthEffect = function(strength, duration){
     this.name = "attackGainBlock"
@@ -148,6 +167,7 @@ var loseStrengthEffect = function(n){
     this.n = n;
     this.duration = 1;
     this.print = "0x000000";
+    this.effectTarget = "endTurn";
 }
 
 loseStrengthEffect.prototype.apply = function(target){
@@ -161,6 +181,25 @@ loseBlockEffect.prototype.getText = function(){
         return this.n;
 }
 
+var enrageEffect = function(n){
+    this.name = "enrageEffect"
+    this.n = n;
+    this.duration = -1;
+    this.print = "0x000099";
+    this.effectTarget = "playCard";
+}
+
+enrageEffect.prototype.apply = function(source, card){
+    if(card.type == "skill")
+        target.strength += this.n
+}
+
+enrageEffect.prototype.manage = function(effect){
+    this.n += effect.n;
+}
+enrageEffect.prototype.getText = function(){
+        return this.n;
+}
 
 //get effect in list
 

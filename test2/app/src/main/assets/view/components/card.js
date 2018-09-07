@@ -65,6 +65,14 @@ var Card= new Phaser.Class({
             this.y = origY;
             this.setScale(1,1);
         }else{
+            for(e of player.playCardEffects){
+                e.apply(player, this.model);
+            }
+            for(e of combat.enemies){
+                for(eff of e.playCardEffects){
+                    eff.apply(e, this.model);
+                }
+            }
             if(selectedCard.model.exhaust)
                 combat.exhaust.push(selectedCard.model)
             else  

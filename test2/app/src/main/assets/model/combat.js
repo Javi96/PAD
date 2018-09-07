@@ -26,9 +26,6 @@ Combat.prototype.startTurn = function(){
             eff.apply(e);
         e.selectAttack();
     }
-    for(e of this.enemies){
-        e.selectAttack();
-    }
     for(eff of player.startTurnEffects)
             eff.apply(player, this.enemies);
     

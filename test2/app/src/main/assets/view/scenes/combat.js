@@ -9,18 +9,20 @@ var CombatScene = new Phaser.Class({
         this.enemies = [];
         this.player;
         this.hand = [];
+        this.combatNumber = 0;
     },
     preload: function(){
         this.load.image("bg", "view/img/bg.jpg");
 
-        for(let i = 0; i < combat.enemies.length; i++){
-            this.load.image("enemy_" + i, "view/img/" + combat.enemies[i].name + ".png");
+        for(let i = 0; i < enemisJSON.length; i++){
+            this.load.image(enemisJSON[i].name, "view/img/enemies/" + enemisJSON[i].name+ ".png");
         }
         this.load.image("player", "view/img/player.png");
 
         for(let c of combat.deck){
             this.load.image(c.name, "view/img/cards/" + c.name + ".png");
         }
+        this.load.image("wound", "view/img/cards/" + "wound" + ".png");
 
         this.load.image("endTurn", "view/img/assets/endTurn.png");
         this.load.image("discard", "view/img/assets/descartes.png");
@@ -36,7 +38,8 @@ var CombatScene = new Phaser.Class({
     create:function(){
         window.addEventListener('resize', resize);
         resize();
-    
+        
+        this.combatNumber++;
         
         this.add.image(1920/2, 1080/2-100, "background");
      
@@ -55,7 +58,7 @@ var CombatScene = new Phaser.Class({
         this.player  = new Entity(this, 300, 450, "player", player);      
     
         for(let i = 0; i < combat.enemies.length; i++){
-            this.enemies[i] = new Entity(this, 1500 + 245 * i, 450, "enemy_" + i, combat.enemies[i]);
+            this.enemies[i] = new Entity(this, 1500 + 245 * i, 450, combat.enemies[i].name, combat.enemies[i]);
         }
     
         //
@@ -129,7 +132,13 @@ var CombatScene = new Phaser.Class({
         } else if(!alive){
             combat.deck = combat.deck.concat(combat.hand)
             combat.hand = []
-            this.scene.start('MapScene');
+            
+            if(this.combatNumber == 6){
+                endResult = "YOU WIN!";
+                this.scene.start('LoseCombatScene');
+            }
+            else
+                this.scene.start('MapScene');
             
         }
 
