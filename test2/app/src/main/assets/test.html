@@ -17,39 +17,14 @@
 
 <body>
 <div >
-    <script src="lib/phaser.min.js"></script>
-    <script>
-            var Cuadrado = new Phaser.Class({
-                Extends: Phaser.Scene,
-                initialize:
-                function Cuadrado(params){
-                    Phaser.Scene.call(this, {key: 'Cuadrado'})
-                },
-    
-                create:function(){
-                    var rect = new Phaser.Geom.Rectangle(250, 200, 300, 200);
-    
-                    var graphics = this.add.graphics({ fillStyle: { color: 0x0000ff } });
-    
-                    graphics.fillRectShape(rect);
-                }
-            })
-        </script>
-    <script>
-        var config = {
-            type: Phaser.AUTO,
-            parent: 'phaser-example',
-            width: 1920,
-            height: 1080,
-            scene: [
-                Cuadrado
-            ]
-            
-        }
-        const game = new Phaser.Game(config);
-    </script>
-   
+        <script src="model/map.js"></script>
 </div>
+    <script>
+        var m = new Map();
+        console.log(m.map);
+
+    </script>
 </body>
+
 
 </html>

@@ -6,7 +6,7 @@ var LoseCombatScene = new Phaser.Class({
         Phaser.Scene.call(this, {key: 'LoseCombatScene'})
     },
     preload: function(){
-
+        
         this.load.image("end", "view/img/end.jpg");
     },
 
@@ -15,6 +15,7 @@ var LoseCombatScene = new Phaser.Class({
         resize();
 
         ending = this.add.image(1920/2, 1080/2, "end").setAlpha(0);
+        ending.setInteractive();
         tweenEnding = this.tweens.add({
             targets: ending,
             scaleX: 4,
@@ -28,5 +29,10 @@ var LoseCombatScene = new Phaser.Class({
             onComplete: onCompleteHandler,
             onCompleteParams: [this]
         }); 
+        this.input.on("gameobjectdown", function(pointer, gameObject){
+            console.log("end");
+            game.destroy();
+        })
+
     }
 })

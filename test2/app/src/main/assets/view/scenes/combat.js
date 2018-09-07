@@ -3,7 +3,12 @@ var CombatScene = new Phaser.Class({
     initialize:
     function CombatScene(params){
         Phaser.Scene.call(this, {key: 'CombatScene'})
-        combat = new Combat();
+        this.discardDeck;
+        this.mainDeck;
+        this.energy;
+        this.enemies = [];
+        this.player;
+        this.hand = [];
     },
     preload: function(){
         this.load.image("bg", "view/img/bg.jpg");
@@ -15,7 +20,6 @@ var CombatScene = new Phaser.Class({
 
         for(let c of combat.deck){
             this.load.image(c.name, "view/img/cards/" + c.name + ".png");
-            //this.load.image(c.name, "view/img/empty_card.jpg");
         }
 
         this.load.image("endTurn", "view/img/assets/endTurn.png");
@@ -38,31 +42,27 @@ var CombatScene = new Phaser.Class({
      
         new EndTurn(this, 1750, 860);
         
-        discardDeck = new DiscardDeck(this, 1750, 1000);
+        this.discardDeck = new DiscardDeck(this, 1750, 1000);
         
+        this.mainDeck = new MainDeck(this, 130, 1000)
+        this.mainDeck.val = this.add.text(155, 1005, combat.deck.length, {fontSize: 50, fontStyle: 'bold'});
     
     
-        mainDeck = new MainDeck(this, 130, 1000)
-        mainDeck.val = this.add.text(150, 1005, combat.deck.length, {fontSize: 30, fontStyle: 'bold'});
+        this.energy = this.add.image(130, 850,"energy");
+        this.energy.val = this.add.text(110, 825, player.mana, {fontSize: 60, fontStyle: 'bold', color: '#000000'});
     
-    
-        energy = this.add.image(130, 850,"energy");
-        energy.val = this.add.text(110, 825, combat.player.mana, {fontSize: 60, fontStyle: 'bold', color: '#000000'});
-    
-    
-        //player = this.add.sprite(300, 450, "player").setScale(0.7 , 0.7);
-        //var playerHP = new HpBar(this, 250, 200, 300, 200);
-        player  = new Entity(this, 300, 450, "player", combat.player);      
+   
+        this.player  = new Entity(this, 300, 450, "player", player);      
     
         for(let i = 0; i < combat.enemies.length; i++){
-            enemies[i] = new Entity(this, 1500 + 245 * i, 450, "enemy_" + i, combat.enemies[i]);
+            this.enemies[i] = new Entity(this, 1500 + 245 * i, 450, "enemy_" + i, combat.enemies[i]);
         }
     
         //
         //  ADICIÓN DE SPRITES
         // 
     
-        renderHand(this);   
+        this.renderHand(this);   
         this.input.setTopOnly(true);
     
         //TWEEN
@@ -74,9 +74,10 @@ var CombatScene = new Phaser.Class({
         var origX = 0;
         var origY = 0;
     
+        let those = this;
         this.input.on("gameobjectdown", function(pointer, gameObject){
             if(gameObject.objectDown)
-                gameObject.objectDown(pointer)
+                gameObject.objectDown(pointer, those)
         })
         this.input.on("gameobjectup", function(pointer, gameObject){
             if(gameObject.gameObjectUp)
@@ -92,21 +93,23 @@ var CombatScene = new Phaser.Class({
             if(gameObject.drag)
                 gameObject.drag(pointer, dragX, dragY)
         });
-    
+        
         this.input.on('dragend', function (pointer, gameObject) {
             if(gameObject.dragEnd)
-                gameObject.dragEnd(pointer)
+                gameObject.dragEnd(pointer, those.enemies.concat([those.player]))
         });
     
     },
 
     update: function(){   
-        discardDeck.val.setText(combat.discard.length);
-        mainDeck.val.setText(combat.deck.length);
-        energy.val.setText(combat.player.mana);
-        player.setHp();
-        for(let e of enemies){
+        this.discardDeck.val.setText(combat.discard.length);
+        this.mainDeck.val.setText(combat.deck.length);
+        this.energy.val.setText(player.mana);
+        this.player.setHp();
+        this.player.setEffects();
+        for(let e of this.enemies){
             e.setHp();
+            e.setEffects()
         }
 
         var alive = false;
@@ -116,17 +119,34 @@ var CombatScene = new Phaser.Class({
                 break;
             }
         }
-        if(combat.player.hp <= 0){
+        if(player.hp <= 0){
             endResult = "YOU LOSE!";
+            
+            
             this.scene.start('LoseCombatScene');
-            //console.log("El jugador ha perdido");
+            
             
         } else if(!alive){
-            endResult = "YOU WIN!";
-            this.scene.start('LoseCombatScene');
-            //console.log("el jugador ha ganado")
+            combat.deck = combat.deck.concat(combat.hand)
+            combat.hand = []
+            this.scene.start('MapScene');
+            
         }
+
+        if(combat.hand.length != this.hand.length || render)
+            this.renderHand();
+    },
+    renderHand: function(){
+       
+        for(h of this.hand)
+            h.destroy()
+        this.hand = [];
+        for(let i = 0; i < combat.hand.length; i++){
+            this.hand.push(new Card(this, 400+i*200, 950, combat.hand[i]))
+        }
+        render = false;
     }
+    
 })
 
 
@@ -135,7 +155,6 @@ function isOn(pointer, elem){
     rightLimit = elem.x + elem.displayWidth/2;
     topLimit = elem.y - elem.displayHeight/2;
     bottomLimit = elem.y + elem.displayHeight/2;
-    //console.log("dimensions: " + leftLimit+ " " + rightLimit +" "+ topLimit + " "+ bottomLimit)
 
     if(pointer.x > leftLimit && pointer.x < rightLimit
     && pointer.y > topLimit && pointer.y < bottomLimit){
@@ -160,33 +179,6 @@ function resize() {
 }
 
 
-
-function renderHand(scene){
-    for(let i = 0; i < combat.hand.length; i++){
-        hand[i] = new Card(scene, 400+i*200, 950, combat.hand[i])
-        scene.input.setDraggable(hand[i]);
-    }
-}
-  
-/*var fS =12
-function showCard(pos, card, f){
-
-    var bg = f.add.image(0, 0, card.name);
-
-    var desc = f.add.text(-50, 40, function(card){    
-        return card.descripcion;
-    }(card), {fontSize: fS});
-    var name = f.add.text(-20, -95, card.name, {fontSize: fS});
-    var ty = f.add.text(-10, 10, card.type, {fontSize: fS*0.6, color: '#000000'});
-    var cost = f.add.text(-75, -105, card.cost, {fontSize: fS*1.5, fontStyle: 'bold', color: '#000000'});
-
-
-    var carta = f.add.container(pos.x, pos.y, [ bg, desc, name, ty , cost]);
-    //ZONA EN LA QUE SE INTERACTUA CON EL CONTAINER
-    carta.setInteractive(new Phaser.Geom.Rectangle(-bg.width/2, -bg.height/2, bg.width, bg.height), Phaser.Geom.Rectangle.Contains);
-    f.input.setDraggable(carta);
-    return carta;
-}*/
 
 function onStartHandler (tweenEnding, targets, gameObject){
     gameObject.setAlpha(1);

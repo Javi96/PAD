@@ -7,17 +7,18 @@ var Card= new Phaser.Class({
         this.model = model;
         this.setPosition(x, y);
         this.setInteractive()
+        this.setScale(1.4, 1.4)
+        scene.input.setDraggable(this);
         scene.children.add(this);
     },
     objectDown:function(pointer){
         selectedCard = this;
         origX = selectedCard.x;
         origY = selectedCard.y;
-        console.log(selectedCard)
         this.scene.tweens.add({
             targets: selectedCard,
-            scaleX : 2.5,
-            scaleY: 2.5,
+            scaleX : 3,
+            scaleY: 3,
             y: selectedCard.y - 160,
             ease: 'Sine.easeOut',
             duration: 150,
@@ -50,25 +51,29 @@ var Card= new Phaser.Class({
         this.x = dragX;
         this.y = dragY;
     },
-    dragEnd:function (pointer) {
-        target = player
-        if(isOn(pointer, player)){
-            target = player;
-        }else{
-            for(let i = 0; i < combat.enemies.length; i++){
-                if(isOn(pointer, enemies[i])){
-                    target = enemies[i];
-                }
+    dragEnd:function (pointer, targets) {
+        target = targets[targets.length - 1]
+        for(t of targets)
+            if(isOn(pointer, t)){
+                target = t;
+                break;
             }
-        }
 
-        if(!combat.action(target.model, selectedCard.model)){
+        targetPlayer = target == targets[targets.length - 1] && this.model.type == "attack"
+        if(targetPlayer || !combat.action(target.model, selectedCard.model)){
             this.x = origX;
             this.y = origY;
-            this.setScale(1.6,1.6);
-        }else{       
-            combat.discard.push(selectedCard.model);
-            console.log(target)
+            this.setScale(1,1);
+        }else{
+            if(selectedCard.model.exhaust)
+                combat.exhaust.push(selectedCard.model)
+            else  
+                combat.discard.push(selectedCard.model);
+            let arr = combat.hand;
+            var index = arr.indexOf(selectedCard.model);
+            if (index > -1) {
+                arr.splice(index, 1);
+            }
             this.scene.tweens.add({
                 targets: target,
                 x: '-=10',

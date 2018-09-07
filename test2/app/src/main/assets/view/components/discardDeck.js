@@ -7,9 +7,10 @@ var DiscardDeck = new Phaser.Class({
         this.setTexture('discard');
         this.setPosition(x, y);
         this.setInteractive();
+        this.setScale(1.5, 1.5)
         
         scene.children.add(this)
-        this.val = scene.add.text(1700, 1010, combat.discard.length, {fontSize: 30, fontStyle: 'bold'});
+        this.val = scene.add.text(1665, 1010, combat.discard.length, {fontSize: 40, fontStyle: 'bold'});
     },
     objectDown:function(pointer){
         console.log(this)
