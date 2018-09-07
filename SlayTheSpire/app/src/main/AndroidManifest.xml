@@ -3,9 +3,11 @@
     package="com.pad.slaythespire">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
+    <permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -43,7 +45,7 @@
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -51,13 +53,14 @@
 
         <activity
             android:name=".FriendRequestActivity"
-            android:label="@string/title_activity_friend_request" />
+            android:label="@string/title_activity_friend_request"
+            android:theme="@style/AppFullScreenTheme"/>
         <activity
             android:name=".CardActivity"
             android:label="@string/title_activity_card" />
         <activity
             android:name=".Contacts"
-            android:label="@string/title_activity_contacts"></activity>
+            android:label="@string/title_activity_contacts" />
     </application>
 
 </manifest>

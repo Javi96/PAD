@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
+import java.util.Objects;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,18 +56,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     private Button signUpButton;
 
     public SignupFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignupFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SignupFragment newInstance(String param1, String param2) {
         SignupFragment fragment = new SignupFragment();
         Bundle args = new Bundle();
@@ -129,7 +121,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.signup:
-                Toast.makeText(this.getActivity(), "signUp firebase", Toast.LENGTH_LONG).show();
                 signUp();
                 break;
         }
@@ -140,29 +131,24 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         final String name = signUpName.getText().toString();
         final String password = signUpPass.getText().toString();
 
+        if(email.equals("") || name.equals("") || password.equals("")){
+            DynamicToast.makeError(Objects.requireNonNull(getActivity()), getString(R.string.invalid_signup), 10).show();
+            return;
+        }else if(password.length()<=4){
+            DynamicToast.makeError(Objects.requireNonNull(getActivity()), getString(R.string.minimun_pass), 10).show();
+            return;
+        }
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(Objects.requireNonNull(getActivity()), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             User data = new User(name, email, password,0.0,0L,1L, "red", true);
                             mDatabase.child("users").child(user.getUid()).setValue(data);
-
-                            //updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            DynamicToast.makeError(getActivity(), "Error toast with duration", 10).show();
-
-                            /*Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();*/
-                            //updateUI(null);
+                            DynamicToast.makeError(Objects.requireNonNull(getActivity()), getString(R.string.error_firebase), 10).show();
                         }
-
-                        // ...
                     }
                 });
     }

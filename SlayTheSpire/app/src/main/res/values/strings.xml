@@ -30,4 +30,23 @@
     <string name="phone">Phone</string>
     <string name="you_already_have_an_account_swipe_left_to_sign_in">You already have an account? Swipe left to sign in.</string>
     <string name="title_activity_contacts">Contacts</string>
+    <string name="ironclad_name">Ironclad</string>
+    <string name="ironclad_health">HP: 80/80</string>
+    <string name="ironclad_gold">Gold: 109</string>
+    <string name="welcome">Welcome %1$s</string>
+    <string name="level">Level: %1$s</string>
+    <string name="matches">Matches: %1$s</string>
+    <string name="points">Points: %1$s</string>
+    <string name="silent_name">Silent</string>
+    <string name="silent_health">HP: 70/70</string>
+    <string name="silent_gold">Gold: 99</string>
+    <string name="defect_name">Defect</string>
+    <string name="defect_health">HP: 75/75</string>
+    <string name="defect_gold">Gold: 99</string>
+    <string name="title_activity_friend_rqst">FriendRqstActivity</string>
+    <string name="invalid_login">Invalid account information</string>
+    <string name="auth_fail">Authentication failed.</string>
+    <string name="minimun_pass">The password must have at least 5 digits</string>
+    <string name="error_firebase">Error with Firebase</string>
+    <string name="invalid_signup">Invalid data</string>
 </resources>

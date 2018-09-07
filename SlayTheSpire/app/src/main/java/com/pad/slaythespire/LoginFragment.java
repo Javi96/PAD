@@ -25,10 +25,20 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,6 +72,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private EditText inputEmail;
     private EditText inputPassword;
 
+    private FirebaseAuth firebaseAuth;
+
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+
+    private DatabaseReference databaseReference;
 
 
     // TODO: Rename and change types of parameters
@@ -82,6 +97,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
      * @param param2 Parameter 2.
      * @return A new instance of fragment LoginFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static LoginFragment newInstance(String param1, String param2) {
         LoginFragment fragment = new LoginFragment();
@@ -99,6 +115,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    Intent intent = new Intent(getActivity(), Main2Activity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            }
+        };
     }
 
     @Override
@@ -107,6 +138,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         this.options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         this.client = GoogleSignIn.getClient(this.getActivity(), options);
@@ -153,23 +185,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            int statusCode = result.getStatus().getStatusCode();
-            Log.w(TAG, "Status code: " + statusCode);
-            Log.v(TAG, "Account: " + result.getSignInAccount());
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                handleSignInResult(task);
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
+            //Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(result);
+
         }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) throws ApiException {
         //try {
             this.account = completedTask.getResult(ApiException.class);
-            Log.v(TAG, "Name: " + this.account.getDisplayName());
-            Log.v(TAG, "Email: " + this.account.getEmail());
             Intent intent = new Intent(this.getActivity(), Main2Activity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -190,11 +214,31 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         //}
     }
 
+    private void handleSignInResult(GoogleSignInResult result) {
+        if(result.isSuccess()){
+            firebaseAuthWithGoogle(result.getSignInAccount());
+        }else{
+            DynamicToast.makeError(getActivity(), "Error: invalid data", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
-
-
-
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            final FirebaseUser user = mAuth.getCurrentUser();
+                            Intent intent = new Intent(getActivity(), Main2Activity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    }
+                });
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -217,13 +261,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login:
-                Toast.makeText(this.getActivity(), "login", Toast.LENGTH_LONG).show();
-                Log.i("------------------", "login");
                 login();
                 break;
 
             case R.id.sign_in_button:
-                Toast.makeText(this.getActivity(), "signIn google", Toast.LENGTH_LONG).show();
                 signIn();
                 break;
 
@@ -237,44 +278,27 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private void login() {
         String email = inputEmail.getText().toString();
         String password = inputPassword.getText().toString();
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        /*Intent intent = new Intent(this.getActivity(), Main2Activity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);*/
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if(user==null) {
-                                /*Log.e("NOMBRE_____", user.getDisplayName());
-                                Log.e("TLF________", user.getPhoneNumber());
-                                Log.e("EMAIL______", user.getEmail());*/
-                                Log.e("ERROR", "NULL");
-
-                                updateUI(user);
-                            }else {
-                                Log.i(TAG, user.getEmail());
-                                Intent intent = new Intent(getActivity(), Main2Activity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
+        if(email.equals("") || password.equals("")){
+            DynamicToast.makeError(getActivity(), getString(R.string.invalid_login),Toast.LENGTH_SHORT).show();
+        }else {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    Intent intent = new Intent(getActivity(), Main2Activity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                            } else {
+                                DynamicToast.makeError(getActivity(), getString(R.string.auth_fail), Toast.LENGTH_SHORT).show();
                             }
-
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            //Toast.makeText(this.getClass(), "Authentication failed.",Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
-                    }
-                });
+                    });
 
-
+        }
     }
 
     private void signIn() {

@@ -18,8 +18,11 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,8 +30,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 
 /**
@@ -36,6 +42,7 @@ import java.util.ArrayList;
  */
 public class ClassificationFragment extends Fragment {
 
+    private DatabaseReference databaseReference;
 
     private ClassificationAdapter classificationAdapter;
     private RecyclerView recyclerView;
@@ -55,6 +62,7 @@ public class ClassificationFragment extends Fragment {
         users = new ArrayList<>();
         dataList = new ArrayList<>();
         Log.e("oncreate", "clfr");
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
     }
 
@@ -111,39 +119,62 @@ public class ClassificationFragment extends Fragment {
             public void onClick(View v) {
                 Log.e("tag____", users.get(recyclerView.getChildAdapterPosition(v)).child("protect").getValue().toString());
                 if(users.get(recyclerView.getChildAdapterPosition(v)).child("protect").getValue().toString().equalsIgnoreCase("false")) {
-                    Toast.makeText(getContext(), "Selected " +
-                            users.get(recyclerView.getChildAdapterPosition(v)), Toast.LENGTH_LONG).show();
-                    //startActivity(new Intent(getActivity(), FriendRequestActivity.class));
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    View newView = getLayoutInflater().inflate(R.layout.activity_friend_request, null);
-                    builder.setView(newView);
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+                    sendFriendRequest(users.get(recyclerView.getChildAdapterPosition(v)));
                 }
             }
         });
         recyclerView.setAdapter(classificationAdapter);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return view;
     }
 
+    private void sendFriendRequest(final DataSnapshot receiverUser){
+        if(Objects.requireNonNull(receiverUser.getKey()).equalsIgnoreCase(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())){
+            DynamicToast.makeError(getContext(), "You can´t add yourself as friend", 10).show();
+            return;
+        }
+        Query query = databaseReference.child("friends").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    Boolean exits = false;
+                    DataSnapshot data = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    for (DataSnapshot id : dataSnapshot.getChildren()) {
+                        if (id.child("id").getValue().toString().equalsIgnoreCase(receiverUser.getKey())) {
+                            DynamicToast.makeWarning(getContext(), receiverUser.child("name").getValue() + " is already your friend", 10).show();
+                            exits = true;
+                        }
+                    }
+                    if (!exits) {
+                        Query query = databaseReference.child("users").child(receiverUser.getKey());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    HashMap<String, String> friendRequest = new HashMap<>();
+                                    friendRequest.put("id", receiverUser.getKey());
+                                    friendRequest.put("name", dataSnapshot.child("name").getValue().toString());
+                                    friendRequest.put("points", dataSnapshot.child("points").getValue().toString());
+                                    databaseReference.child("friends").child(FirebaseAuth.getInstance().getUid()).push().setValue(friendRequest);
+                                    DynamicToast.makeSuccess(getContext(), "You have added "
+                                            + receiverUser.child("name").getValue() + " to your friend list", 10).show();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 
     @Override
     public void onResume() {
