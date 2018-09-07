@@ -4,12 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OptionFragment"
-    android:background="@color/colorPrimaryDark">
+    android:background="@drawable/bg">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="456dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/friend_back"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/kreon"
+            android:text="@string/about_the_game"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/kreon"
+            android:text="@string/about_us_us"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp" />
+    </LinearLayout>
 
 </FrameLayout>

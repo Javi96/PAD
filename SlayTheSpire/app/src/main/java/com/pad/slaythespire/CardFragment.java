@@ -49,7 +49,6 @@ public class CardFragment extends Fragment {
 
 
     GridView gridView;
-    //int[] fruitImages = {R.drawable.armaments,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash,R.drawable.clash};
     ArrayList<Integer> cards;
     ArrayList<String> cardsName;
     CustomAdapter customAdapter;
@@ -57,21 +56,15 @@ public class CardFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         cards = new ArrayList<>();
         cardsName = new ArrayList<>();
         customAdapter = new CustomAdapter();
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_card, container, false);
-
         try {
             BufferedReader r = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("cards.txt")));
             StringBuilder total = new StringBuilder();
@@ -80,29 +73,15 @@ public class CardFragment extends Fragment {
                 total.append(line).append('\n');
                 cardsName.add(line);
             }
-            Log.e("tag", total.toString());
         }catch (IOException e) {
             e.printStackTrace();
         }
 
 
 
-        /*try {
-            cards = getActivity().getAssets().list("cards");
-            for(String data : cards){
-                Log.e("datos: ", data);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
         Field[] drawablesFields = com.pad.slaythespire.R.drawable.class.getFields();
-        ArrayList<Drawable> drawables = new ArrayList<>();
-
         for (Field field : drawablesFields) {
             try {
-                //Log.i("LOG_TAG", "com.your.project.R.cards." + field.getName());
                 if(cardsName.contains(field.getName())) {
                     cards.add(field.getInt(field));
                 }
@@ -111,24 +90,14 @@ public class CardFragment extends Fragment {
             }
         }
 
-
-
         gridView = view.findViewById(R.id.grid_layout);
         gridView.setAdapter(customAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(getApplicationContext(),fruitNames[i],Toast.LENGTH_LONG).show();
-                /*Intent intent = new Intent(getActivity(), CardActivity.class);
-                intent.putExtra("name", fruitNames[i]);
-                intent.putExtra("image", fruitImages[i]);
-                startActivity(intent);*/
-                //startActivity(new Intent(getActivity(), FriendRequestActivity.class));
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 View newView = getLayoutInflater().inflate(R.layout.card_image,null);
                 ImageView imageView = newView.findViewById(R.id.images);
-                //Bitmap bitmap = BitmapFactory.decodeFile("file:///android_asset/cards/" +cards[i]);
-                //imageView.setImageBitmap(BitmapFactory.decodeFile("file:///android_asset/cards/" +cards[i]));
 
                 imageView.setImageResource(cards.get(i));
                 builder.setView(newView);
@@ -146,28 +115,28 @@ public class CardFragment extends Fragment {
     private class CustomAdapter extends BaseAdapter {
         @Override
         public int getCount() {
+
             return cards.size();
         }
 
         @Override
         public Object getItem(int i) {
+
             return null;
         }
 
         @Override
         public long getItemId(int i) {
+
             return 0;
         }
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             View view1 = getLayoutInflater().inflate(R.layout.card_image, null, false);
-            //getting view in row_data
             ImageView image = view1.findViewById(R.id.images);
             image.setImageResource(cards.get(i));
             return view1;
-
-
         }
     }
 

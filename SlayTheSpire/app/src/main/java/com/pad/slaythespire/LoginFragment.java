@@ -43,14 +43,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LoginFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,16 +81,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-
-    // TODO: Rename and change types and number of parameters
     public static LoginFragment newInstance(String param1, String param2) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
@@ -158,61 +140,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public void onStart() {
         super.onStart();
         this.account = GoogleSignIn.getLastSignedInAccount(this.getActivity());
-        if(account!=null){
-            this.handleLastSignedInAccount(this.account);
-        }
+
     }
-
-    private void handleLastSignedInAccount(GoogleSignInAccount account) {
-        Log.i(TAG, "Last singed account");
-        Log.i(TAG, "Name: " + this.account.getDisplayName());
-        Log.i(TAG, "Email: " + this.account.getEmail());
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            //Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(result);
 
         }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) throws ApiException {
-        //try {
-            this.account = completedTask.getResult(ApiException.class);
-            Intent intent = new Intent(this.getActivity(), Main2Activity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            //updateUI(account);
-        /*} catch (ApiException e) {
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            switch(e.getStatusCode()){
-                case GoogleSignInStatusCodes.SIGN_IN_REQUIRED:
-                    break;
-                case GoogleSignInStatusCodes.NETWORK_ERROR:
-                    break;
-                case GoogleSignInStatusCodes.INVALID_ACCOUNT:
-                    break;
-                case GoogleSignInStatusCodes.INTERNAL_ERROR:
-                    break;
-            }*/
-            //updateUI(null);
-        //}
-    }
 
     private void handleSignInResult(GoogleSignInResult result) {
         if(result.isSuccess()){
@@ -278,7 +218,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private void login() {
         String email = inputEmail.getText().toString();
         String password = inputPassword.getText().toString();
-        if(email.equals("") || password.equals("")){
+        Log.e("ra", email.toString() + password.toString());
+        if(false){
             DynamicToast.makeError(getActivity(), getString(R.string.invalid_login),Toast.LENGTH_SHORT).show();
         }else {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -310,17 +251,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private void updateUI(Object o) {
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

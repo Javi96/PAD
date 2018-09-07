@@ -13,7 +13,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="644dp"
+        android:layout_height="600dp"
         app:layout_constraintBottom_toTopOf="@+id/nav_bar"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"

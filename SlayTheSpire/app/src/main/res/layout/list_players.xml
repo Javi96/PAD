@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
 
-                android:background="@drawable/player_info"
+                android:background="@drawable/friend_back"
                 android:orientation="horizontal">
 
                 <LinearLayout

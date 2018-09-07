@@ -33,13 +33,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class ClassificationFragment extends Fragment {
 
     private DatabaseReference databaseReference;
@@ -61,7 +60,6 @@ public class ClassificationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         users = new ArrayList<>();
         dataList = new ArrayList<>();
-        Log.e("oncreate", "clfr");
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
     }
@@ -70,21 +68,6 @@ public class ClassificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.e("onCreateView", "clfr");
-
-
-        /*ArrayList<String> dataList = new ArrayList<>();
-        dataList.add("hiii");
-        dataList.add("hooo");
-        View view = inflater.inflate(R.layout.fragment_classification, container, false);
-        RecyclerView recyclerView  = view.findViewById(R.id.recycle_view_classification);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-
-        ClassificationAdapter classificationAdapter = new ClassificationAdapter(dataList);
-        recyclerView.setAdapter(classificationAdapter);
-
-
-        return inflater.inflate(R.layout.fragment_classification, container, false);*/
 
         query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("points");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,11 +77,10 @@ public class ClassificationFragment extends Fragment {
                     users.clear();
 
                     for (DataSnapshot game : dataSnapshot.getChildren()) {
-                        Log.e("data", game.child("name").toString());
 
                         users.add(game);
                     }
-
+                    Collections.reverse(users);
 
                 }
             }
@@ -117,7 +99,6 @@ public class ClassificationFragment extends Fragment {
         classificationAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("tag____", users.get(recyclerView.getChildAdapterPosition(v)).child("protect").getValue().toString());
                 if(users.get(recyclerView.getChildAdapterPosition(v)).child("protect").getValue().toString().equalsIgnoreCase("false")) {
                     sendFriendRequest(users.get(recyclerView.getChildAdapterPosition(v)));
                 }
@@ -129,7 +110,7 @@ public class ClassificationFragment extends Fragment {
 
     private void sendFriendRequest(final DataSnapshot receiverUser){
         if(Objects.requireNonNull(receiverUser.getKey()).equalsIgnoreCase(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())){
-            DynamicToast.makeError(getContext(), "You can´t add yourself as friend", 10).show();
+            DynamicToast.makeError(getContext(), getString(R.string.not_yourself), 10).show();
             return;
         }
         Query query = databaseReference.child("friends").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -140,7 +121,7 @@ public class ClassificationFragment extends Fragment {
                     DataSnapshot data = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     for (DataSnapshot id : dataSnapshot.getChildren()) {
                         if (id.child("id").getValue().toString().equalsIgnoreCase(receiverUser.getKey())) {
-                            DynamicToast.makeWarning(getContext(), receiverUser.child("name").getValue() + " is already your friend", 10).show();
+                            DynamicToast.makeWarning(getContext(), receiverUser.child("name").getValue() + getString(R.string.is_your_friend_already), 10).show();
                             exits = true;
                         }
                     }
@@ -155,8 +136,8 @@ public class ClassificationFragment extends Fragment {
                                     friendRequest.put("name", dataSnapshot.child("name").getValue().toString());
                                     friendRequest.put("points", dataSnapshot.child("points").getValue().toString());
                                     databaseReference.child("friends").child(FirebaseAuth.getInstance().getUid()).push().setValue(friendRequest);
-                                    DynamicToast.makeSuccess(getContext(), "You have added "
-                                            + receiverUser.child("name").getValue() + " to your friend list", 10).show();
+                                    DynamicToast.makeSuccess(getContext(), getString(R.string.you_added)
+                                            + receiverUser.child("name").getValue() + getString(R.string.to_your), 10).show();
                                 }
                             }
                             @Override
@@ -179,7 +160,6 @@ public class ClassificationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("resume", "resume");
 
     }
 

@@ -21,14 +21,6 @@
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SignupActivity"
-            android:label="@string/title_activity_signup"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LoginSignActivity"
-            android:label="@string/title_activity_login_sign"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".LoginSignupActivity"
             android:label="@string/title_activity_login_signup"
             android:theme="@style/AppTheme.NoActionBar">
@@ -58,9 +50,6 @@
         <activity
             android:name=".CardActivity"
             android:label="@string/title_activity_card" />
-        <activity
-            android:name=".Contacts"
-            android:label="@string/title_activity_contacts" />
         <activity
             android:name=".GameActivity"
             android:label="@string/title_activity_game"

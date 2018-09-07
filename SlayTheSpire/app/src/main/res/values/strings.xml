@@ -50,4 +50,17 @@
     <string name="error_firebase">Error with Firebase</string>
     <string name="invalid_signup">Invalid data</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="play">Play</string>
+    <string name="gold_109">Gold: 109</string>
+    <string name="pv_80_80">PV: 80/80</string>
+    <string name="select_your_character">Select your character</string>
+    <string name="locked">This player in locked, its only an Alpha version :D</string>
+    <string name="not_yourself">You can´t add yourself as friend</string>
+    <string name="is_your_friend_already">is already your friend</string>
+    <string name="to_your">to your friend list</string>
+    <string name="you_added">You have added</string>
+    <string name="error_info">must implement OnFragmentInteractionListener</string>
+    <string name="signupbutton_2">sign up button</string>
+    <string name="about_the_game">About the game</string>
+    <string name="about_us_us">This game is an Alpha version of Slay the Spire and you can play with only one of the 3 main characters. It is also possible to see the collection of cards of that character, see the global classification and add friends. To scroll through the menu you can use the lower navigation bar or you can move freely through the different screens of the app.</string>
 </resources>

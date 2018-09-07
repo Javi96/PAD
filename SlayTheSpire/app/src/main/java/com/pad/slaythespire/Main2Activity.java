@@ -26,19 +26,10 @@ import android.widget.TextView;
 
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener{
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+
     private ViewPager mViewPager;
 
 
@@ -57,16 +48,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         setContentView(R.layout.activity_main2);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        //navigationView = findViewById(R.id.nav_bar);
-        //navigationView.setSelectedItemId(R.id.nav_home);
 
         mViewPager.setCurrentItem(2);
         findViewById(R.id.icon_card).setOnClickListener(this);
@@ -98,14 +84,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
+
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
+
 
 
 
@@ -114,12 +95,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         public PlaceholderFragment() {
         }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
+
         public static Fragment newInstance(int sectionNumber) {
-            Log.e("section numbre", Integer.toString(sectionNumber));
             Fragment fragment = null;
             switch(sectionNumber){
                 case 0:
@@ -146,16 +123,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
-            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -164,14 +136,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 5;
         }
     }

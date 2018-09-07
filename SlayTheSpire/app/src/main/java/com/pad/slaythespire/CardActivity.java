@@ -26,9 +26,6 @@ public class CardActivity extends AppCompatActivity {
 
         gridData.setText(receivedName);
         imageView.setImageResource(receivedImage);
-        //enable back Button
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

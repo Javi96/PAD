@@ -32,9 +32,6 @@ public class GameActivity extends AppCompatActivity {
         int width = size.x;
         int height = size.y;
 
-        System.out.println("-------------------------------------------------------------------------------");
-        System.out.println(width + " " +  height);
-
         webView = findViewById(R.id.webview);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);

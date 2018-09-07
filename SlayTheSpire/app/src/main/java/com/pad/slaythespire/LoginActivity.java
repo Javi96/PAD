@@ -75,9 +75,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 break;
             case R.id.link_sign_up:
                 Toast.makeText(this, "sign up button", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this, SignupActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
                 break;
             default:
                 break;

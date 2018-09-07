@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@drawable/defect_big">
+                android:background="@drawable/ironclad_big">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/kreon_bold"
-                    android:text="Select your character"
+                    android:text="@string/select_your_character"
                     android:textColor="@android:color/holo_orange_light"
                     android:textSize="24sp" />
 
@@ -88,7 +88,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/kreon"
-                    android:text="El blindado"
+                    android:text="@string/ironclad_name"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
@@ -110,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/kreon"
-                        android:text="PV: 80/80"
+                        android:text="@string/pv_80_80"
                         android:textColor="@android:color/holo_red_light"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -133,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/kreon"
-                        android:text="Gold: 109"
+                        android:text="@string/gold_109"
                         android:textColor="@android:color/holo_orange_light"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -195,7 +195,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/basic_button"
         android:fontFamily="@font/kreon_bold"
-        android:text="Play"
+        android:text="@string/play"
         android:textAlignment="center"
         android:textColor="@android:color/holo_orange_light"
         android:textSize="40sp"

@@ -68,7 +68,7 @@
 
     <GridView
         android:id="@+id/grid_layout"
-        android:numColumns="3"
+        android:numColumns="2"
         android:verticalSpacing="1dp"
         android:background="#0000ffff"
         android:horizontalSpacing="1dp"

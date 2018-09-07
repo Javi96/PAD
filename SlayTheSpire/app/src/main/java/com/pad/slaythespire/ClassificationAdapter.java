@@ -1,6 +1,5 @@
 package com.pad.slaythespire;
 
-import android.app.FragmentManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 
@@ -26,7 +24,6 @@ public class ClassificationAdapter
     public ClassificationAdapter() {
     }
 
-    // enlaza el adaptador con la lista de items
     @NonNull
     @Override
     public ViewHolderClassification onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -81,13 +78,11 @@ public class ClassificationAdapter
             matches = itemView.findViewById(R.id.card_template_matches);
             maxScore = itemView.findViewById(R.id.card_template_score);
             friendRequest = itemView.findViewById(R.id.card_template_friend_request);
-
-            //imageView = itemView.findViewById(R.id.card_template_image);
         }
 
         public void assignData(DataSnapshot s, int index) {
             name.setText(s.child("name").getValue().toString());
-            rank.setText("Rank: " + Integer.toString(index));
+            rank.setText("Rank: " + Integer.toString(index+1));
             level.setText("Lv:" + s.child("level").getValue().toString());
             matches.setText("Matches: " + s.child("matches").getValue().toString());
             maxScore.setText("Score: "+ s.child("points").getValue().toString());
