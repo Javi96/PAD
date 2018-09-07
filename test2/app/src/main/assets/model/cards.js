@@ -356,8 +356,8 @@ var dropkick = {
 
 
 
-var entrenche = {
-    "name":"entrenche",
+var entrench = {
+    "name":"entrench",
     "cost": 2,
     "descripcion": "Deal %dmg damage",
     "type": "skill",
@@ -373,7 +373,7 @@ var entrenche = {
 
 
 var flameBarrier = {
-    "name":"strike",
+    "name":"flameBarrier",
     "cost": 2,
     "block": 12,
     "descripcion": "Deal %dmg damage",
@@ -391,7 +391,7 @@ var flameBarrier = {
 
 
 var hemokinesis = {
-    "name":"strike",
+    "name":"hemokinesis",
     "cost": 1,
     "dmg": 14,
     "selfDMG" : 3,
@@ -429,30 +429,17 @@ var intimidate = {
     "weak" : 1,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
-    "effects":[new applyWeakEffect(this.weak, list)],
+    "effects":[],
     "action": function(player, target, enemies){
         player.mana -= this.cost;
-        return true;
-    }
-}
-
-
-
-var metallicize = {
-    "name":"metallicize",
-    "cost": 1,
-    "block" : 3,
-    "descripcion": "Deal %dmg damage",
-    "type": "power",
-    "effects":[new metallicizeEffect(this.block)],
-    "action": function(player, target, enemies){
+        target.weak += this.weak;
         return true;
     }
 }
 
 
 var powerThrough = {
-    "name":"powerTrhough",
+    "name":"powerThrough",
     "cost": 1,
     "block": 15,
     "descripcion": "Deal %dmg damage",
@@ -491,7 +478,7 @@ var rage = {
     "block": 3,
     "descripcion": "Deal %dmg damage",
     "type": "skill",
-    "effects":[new attackGainBlockEffect(this.block, 1)],
+    "effects":["new attackGainBlockEffect(this.block, 1)"],
     "action": function(player, target, enemies){
         player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
@@ -511,21 +498,11 @@ var recklessChrage = {
             return false;
         player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
-        combat.deck.push(dazed);
+        combat.deck.push(wound);
         return true;
     }
 }
 
-var dazed = {
-    "name":"dazed",
-    "cost": 0,
-    "descripcion": "Deal %dmg damage",
-    "type": "status",
-    "effects":[],
-    "action": function(player, target, enemies){
-        return false;
-    }
-}
 
 var seeingRed = {
     "name":"seeingRed",
@@ -561,7 +538,7 @@ var uppercut = {
     
 
 var whirlwind = {
-    "name":"strike",
+    "name":"whirlwind",
     "cost": undefined,
     "dmg": 5,
     "descripcion": "Deal %dmg damage",
@@ -596,32 +573,18 @@ var bludgeon = {
 }
 
 
-var deamonForm = {
-    "name":"deamonForm",
+var demonForm = {
+    "name":"demonForm",
     "cost": 3,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
-    "effects":[new gainStrengthEffect(2)],
+    "effects":["new gainStrengthEffect(2)"],
     "action": function(player, target, enemies){
         return true;
     }
 }
 
-var doubleTap = {
 
-    "name":"doubleTap",
-    "cost": 1,
-    "descripcion": "Deal %dmg damage",
-    "type": "skill",
-    "effects":[new dobleTapEffect(1)],
-    "action": function(player, target, enemies){
-        if(!target)
-            return false;
-        player.makeAttack(target, this.dmg);
-        player.mana -= this.cost;
-        return true;
-    }
-}
 
 var feed = {
     "name":"feed",
