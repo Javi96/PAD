@@ -34,6 +34,7 @@
     <script src="view/scenes/map.js"></script>
     <script src="view/components/card.js"></script>
     <script src="view/components/hpBar.js"></script>
+    <script src="view/components/effects.js"></script>
     <script src="view/components/entity.js"></script>
     <script src="view/components/token_map.js"></script>
 
@@ -57,13 +58,14 @@
         var selectedCard;
         var emmiter;
         var combat;
+        var render = false;
         var mapModel = new Map(6);
         var player = new Player({
-            "hp" : 30,
-            "maxHP" : 30,
+            "hp" : 80,
+            "maxHP" : 80,
             "mana" : 3,
-            "block" : 0,
-            "strenght" : 0,
+            "block" : 2,
+            "strength" : 2,
             "startCombatEffects" : [],
             "startTurnEffects" : [],
             "playCardEffects" : [],
@@ -72,7 +74,7 @@
 
             "receiveAttackEffects" : [],
         });
-        var hand = [strike, clash];
+        var hand = [twinStrike, wildStrike, bloodletting, combust];
         var ending;
         var tweenEnding;
         var endResult;

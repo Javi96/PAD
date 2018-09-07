@@ -7,6 +7,7 @@ var Card= new Phaser.Class({
         this.model = model;
         this.setPosition(x, y);
         this.setInteractive()
+        this.setScale(1.4, 1.4)
         scene.input.setDraggable(this);
         scene.children.add(this);
     },
@@ -16,8 +17,8 @@ var Card= new Phaser.Class({
         origY = selectedCard.y;
         this.scene.tweens.add({
             targets: selectedCard,
-            scaleX : 2.5,
-            scaleY: 2.5,
+            scaleX : 3,
+            scaleY: 3,
             y: selectedCard.y - 160,
             ease: 'Sine.easeOut',
             duration: 150,
@@ -63,8 +64,11 @@ var Card= new Phaser.Class({
             this.x = origX;
             this.y = origY;
             this.setScale(1,1);
-        }else{       
-            combat.discard.push(selectedCard.model);
+        }else{
+            if(selectedCard.model.exhaust)
+                combat.exhaust.push(selectedCard.model)
+            else  
+                combat.discard.push(selectedCard.model);
             let arr = combat.hand;
             var index = arr.indexOf(selectedCard.model);
             if (index > -1) {

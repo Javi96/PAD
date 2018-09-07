@@ -24,7 +24,7 @@ var clash = {
     "effects":[],
     "action": function(player, target, enemies){
         console.log(combat.hand)
-        for(let asd in combat.hand){
+        for(let asd of combat.hand){
             if(asd.type != "attack"){
                 return false;
             }
@@ -57,11 +57,12 @@ var bash = {
     "dmg": 8,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
-    "effects":[new applyVulnerableEffect(2)],
+    "effects":[],
     "action": function(player, target, enemies){
         if(!target)
             return false;
         player.makeAttack(target, this.dmg);
+        target.vulnerable += 2;
         player.mana -= this.cost;
         return true;
     }
@@ -107,8 +108,6 @@ var cleave = {
     "type": "attack",
     "effects":[],
     "action": function(player, target, enemies){
-        if(!target)
-            return false;
         for(e of enemies)
             player.makeAttack(e, this.dmg);
         player.mana -= this.cost;
@@ -122,12 +121,13 @@ var clothesline = {
     "dmg": 12,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
-    "effects":[new applyWeakEffect(2)],
+    "effects":[],
     "action": function(player, target, enemies){
         if(!target)
             return false;
         player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
+        target.weak += 2;
         return true;
     }
 }
@@ -138,9 +138,9 @@ var flex = {
     "cost": 0,
     "descripcion": "Deal %dmg damage",
     "type": "skill",
-    "effects":[new loseStrenght(2)],
+    "effects":["new losestrength(2)"],
     "action": function(player, target, enemies){
-        player.streght += 2;
+        player.stregth += 2;
         player.mana -= this.cost;
         return true;
     }
@@ -191,7 +191,7 @@ var perfectedStrike = {
     "action": function(player, target, enemies){
         if(!target)
             return false;
-        boost = 0;
+        boost = 2;
         for(c of combat.deck)
             if(c.name.includes("strike"))
                 boost += 2;
@@ -203,6 +203,7 @@ var perfectedStrike = {
         for(c of combat.discard)
             if(c.name.includes("strike"))
                 boost += 2;
+        console.log(boost)
         player.makeAttack(target, this.dmg + boost);
         player.mana -= this.cost;
         return true;
@@ -218,10 +219,8 @@ var swordBoomerang = {
     "type": "attack",
     "effects":[],
     "action": function(player, target, enemies){
-        if(!target)
-            return false;
         for(i = 0; i < 3; i++){
-            t = enemies[Math.floor(Math.random() * enemies.lengt)]
+            t = enemies[Math.floor(Math.random() * enemies.length)]
             player.makeAttack(t, this.dmg);
         }
         player.mana -= this.cost;
@@ -236,12 +235,12 @@ var thunderclap = {
     "dmg": 4,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
-    "effects":[new applyVulnerableEffect(1)],
+    "effects":[],
     "action": function(player, target, enemies){
-        if(!target)
-            return false;
-        for(t of enemies)
+        for(t of enemies){
             player.makeAttack(t, this.dmg);
+            t.vulnerable += 1;
+        }
         player.mana -= this.cost;
         return true;
     }
@@ -257,7 +256,7 @@ var twinStrike = {
     "action": function(player, target, enemies){
         if(!target)
             return false;
-        
+        combat.drawHand(1);
         player.makeAttack(target, this.dmg);
         player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
@@ -313,9 +312,10 @@ var combust = {
     "name":"combust",
     "cost": 1,
     "descripcion": "Deal %dmg damage",
-    "type": "attack",
-    "effects":[new combustEffect(1, 5)],
+    "type": "power",
+    "effects":[],
     "action": function(player, target, enemies){
+        player.addEffect(new combustEffect(1, 5))
         return true;
     }
 }
@@ -330,7 +330,7 @@ var disarm = {
     "action": function(player, target, enemies){
         if(!target)
             return false;
-        target.strenght -= 2;
+        target.strength -= 2;
         return true;
     }
 }
@@ -348,7 +348,7 @@ var dropkick = {
             return false;
         player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
-        if(getEffects)
+        if(target.vulnerable > 0)
             player.mana += 1;
         return true;
     }
@@ -372,32 +372,19 @@ var entrenche = {
 }
 
 
-
-var evolve = {
-    "name":"strike",
-    "cost": 1,
-    "dmg": 6,
-    "descripcion": "Deal %dmg damage",
-    "type": "skill",
-    "effects":[new drawStatusEffect(1)],
-    "action": function(player, target, enemies){
-        return true;
-    }
-}
-
-
 var flameBarrier = {
     "name":"strike",
     "cost": 2,
     "block": 12,
     "descripcion": "Deal %dmg damage",
     "type": "skill",
-    "effects":[new returnDmgEffect(4, 1)],
+    "effects":[],
     "action": function(player, target, enemies){
         if(!target)
             return false;
-        player.makeAttack(target, this.dmg);
+        player.getBlock(this.block);
         player.mana -= this.cost;
+        player.addEffect(new returnDmgEffect(4, 1));
         return true;
     }
 }
@@ -425,7 +412,7 @@ var hemokinesis = {
 var inflame = {
     "name":"inflame",
     "cost": 1,
-    "strenght" : 2,
+    "strength" : 2,
     "descripcion": "Deal %dmg damage",
     "type": "power",
     "effects":[],
@@ -506,8 +493,6 @@ var rage = {
     "type": "skill",
     "effects":[new attackGainBlockEffect(this.block, 1)],
     "action": function(player, target, enemies){
-        if(!target)
-            return false;
         player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
         return true;
@@ -562,10 +547,12 @@ var uppercut = {
     "dmg": 13,
     "descripcion": "Deal %dmg damage",
     "type": "attack",
-    "effects":[new applyWeakEffect(1),new applyVulnerableEffect(1)],
+    "effects":[],
     "action": function(player, target, enemies){
         if(!target)
             return false;
+        player.weak += 1;
+        player.vulnerable += 1;
         player.makeAttack(target, this.dmg);
         player.mana -= this.cost;
         return true;

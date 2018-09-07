@@ -45,15 +45,13 @@ var CombatScene = new Phaser.Class({
         this.discardDeck = new DiscardDeck(this, 1750, 1000);
         
         this.mainDeck = new MainDeck(this, 130, 1000)
-        this.mainDeck.val = this.add.text(150, 1005, combat.deck.length, {fontSize: 30, fontStyle: 'bold'});
+        this.mainDeck.val = this.add.text(155, 1005, combat.deck.length, {fontSize: 50, fontStyle: 'bold'});
     
     
         this.energy = this.add.image(130, 850,"energy");
         this.energy.val = this.add.text(110, 825, player.mana, {fontSize: 60, fontStyle: 'bold', color: '#000000'});
     
-    
-        //player = this.add.sprite(300, 450, "player").setScale(0.7 , 0.7);
-        //var playerHP = new HpBar(this, 250, 200, 300, 200);
+   
         this.player  = new Entity(this, 300, 450, "player", player);      
     
         for(let i = 0; i < combat.enemies.length; i++){
@@ -108,8 +106,10 @@ var CombatScene = new Phaser.Class({
         this.mainDeck.val.setText(combat.deck.length);
         this.energy.val.setText(player.mana);
         this.player.setHp();
+        this.player.setEffects();
         for(let e of this.enemies){
             e.setHp();
+            e.setEffects()
         }
 
         var alive = false;
@@ -132,11 +132,19 @@ var CombatScene = new Phaser.Class({
             this.scene.start('MapScene');
             
         }
+
+        if(combat.hand.length != this.hand.length || render)
+            this.renderHand();
     },
     renderHand: function(){
+       
+        for(h of this.hand)
+            h.destroy()
+        this.hand = [];
         for(let i = 0; i < combat.hand.length; i++){
             this.hand.push(new Card(this, 400+i*200, 950, combat.hand[i]))
         }
+        render = false;
     }
     
 })

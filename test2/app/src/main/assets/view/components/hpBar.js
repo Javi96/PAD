@@ -7,8 +7,6 @@ var HpBar = new Phaser.Class({
         this.entity = entity;
 
         this.graphics = scene.add.graphics();
-        this.maxHP = entity.maxHP;
-        this.hp = entity.hp;
         this.x = x;
         this.y = y;
         this.w = w;
@@ -17,15 +15,13 @@ var HpBar = new Phaser.Class({
 
         scene.children.add(this)
 
-        this.val = scene.add.text(x + w / 4, y + h / 4 , this.hp + "/" + this.maxHP, {fontSize: 30, fontStyle: 'bold'});
+        this.val = scene.add.text(x - 40 + w / 4, y - 10 + h / 4 , this.entity.hp + "/" + this.entity.maxHP + "(" + this.entity.block + ")", {fontSize: 50, fontStyle: 'bold', color: '#000000'});
     },
     update:function(hp){
-        this.hp = hp;
         this.printHp()
-        this.val.setText(this.hp + "/" + this.maxHP);
+        this.val.setText(this.entity.hp + "/" + this.entity.maxHP + "(" + this.entity.block + ")");
     },
     printHp: function(x, y, w, h){
-
         this.graphics.clear();
         this.graphics.fillStyle(0xaaaaaa);
         this.graphics.fillRectShape(this.rect);

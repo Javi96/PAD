@@ -2,9 +2,9 @@ var enemisJSON = [
     {
         "name":"wotisdis",
 
-        "hp" : 10,
-        "maxHP" : 10,
-        "strenght" : 0,
+        "hp" : 50,
+        "maxHP" : 50,
+        "strength" : 0,
         "block" : 1,
         "startCombatEffects" : [],
         "startTurnEffects" : [],

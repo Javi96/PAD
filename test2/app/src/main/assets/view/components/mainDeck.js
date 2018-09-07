@@ -4,7 +4,7 @@ var MainDeck = new Phaser.Class({
     function (scene, x, y){
         Phaser.GameObjects.Image.call(this, scene);
         this.setTexture('deck');
-        this.setScale(1.1);
+        this.setScale(1.8, 1.8);
         this.setPosition(x, y);
         this.setInteractive();
         scene.children.add(this)

@@ -1,10 +1,12 @@
-var Combat = function(deck, enemy){
-    this.deck = deck;
-    console.log("constructor");
-    console.log(this.deck);
+var Combat = function(deck, enemies){
+    this.deck = []
+    for(d of deck)
+        this.deck.push(d);
+    player.mana = 3;
     this.hand = [];
     this.discard = [];
-    this.enemies = enemy;
+    this.exhaust = [];
+    this.enemies = enemies;
 }
 
 Combat.prototype.action = function(target, card){
@@ -21,26 +23,38 @@ Combat.prototype.action = function(target, card){
 Combat.prototype.startTurn = function(){
     for(e of this.enemies){
         for(eff of e.startTurnEffects)
-            eff.apply();
+            eff.apply(e);
         e.selectAttack();
     }
     for(e of this.enemies){
         e.selectAttack();
     }
     for(eff of player.startTurnEffects)
-            eff.apply();
+            eff.apply(player, this.enemies);
     
     this.drawHand(6)
 }
 
 Combat.prototype.endTurn = function(){
     player.mana = 3;
-    for(e of this.enemies){
+    for(e of this.enemies)
         e.nextAttack();
-    }
+    
+
+    for(e of this.enemies)
+        for(eff of e.endTurnEffects)
+            eff.apply(e);
+    
     for(eff of player.endTurnEffects)
-    {
-        eff.apply();    
+        eff.apply(player, this.enemies);
+    
+    this.reduceAllEffects();
+}
+
+Combat.prototype.reduceAllEffects = function(){
+    player.reduceEffects();
+    for(e of this.enemies){
+        e.reduceEffects();
     }
 }
 
@@ -65,14 +79,6 @@ Combat.prototype.discardHand = function(keep){
 }
 
 Combat.prototype.drawHand = function(n){
-    maxDraw = this.deck.length + this.discard.length;
-    draw = ((n < this.deck.length + this.discard.length) ? n  : maxDraw) ;
-    for(let i = 0; i < draw; i++){
-        this.hand[i] = this.deck.pop();
-        if(this.deck.length == 0){
-            this.suffleDeck();
-        }
-    }
     notEnought = false;
     let i;
     for(i = 0; i < n; i++){
@@ -86,8 +92,9 @@ Combat.prototype.drawHand = function(n){
         this.suffleDeck();
     }
     for(;i < n && this.deck.length > 0; i++){
-        this.hand[i] = this.deck.pop();
+        this.hand.push(this.deck.pop());
     }
+    render = true;
 
 }
 

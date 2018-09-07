@@ -6,6 +6,7 @@ var EndTurn = new Phaser.Class({
         this.setTexture('endTurn');
         this.setPosition(x, y);
         this.setInteractive();
+        this.setScale(1.4, 1.4)
         this.scene = scene
         scene.children.add(this)
     },
