@@ -54,13 +54,17 @@
         <activity
             android:name=".FriendRequestActivity"
             android:label="@string/title_activity_friend_request"
-            android:theme="@style/AppFullScreenTheme"/>
+            android:theme="@style/AppFullScreenTheme" />
         <activity
             android:name=".CardActivity"
             android:label="@string/title_activity_card" />
         <activity
             android:name=".Contacts"
             android:label="@string/title_activity_contacts" />
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/title_activity_game"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

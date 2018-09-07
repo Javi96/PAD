@@ -49,4 +49,5 @@
     <string name="minimun_pass">The password must have at least 5 digits</string>
     <string name="error_firebase">Error with Firebase</string>
     <string name="invalid_signup">Invalid data</string>
+    <string name="title_activity_game">GameActivity</string>
 </resources>

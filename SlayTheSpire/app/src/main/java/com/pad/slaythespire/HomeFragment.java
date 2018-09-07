@@ -2,6 +2,7 @@ package com.pad.slaythespire;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import org.w3c.dom.Text;
 
@@ -59,6 +61,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.ironclad_icon).setOnClickListener(this);
         view.findViewById(R.id.silent_icon).setOnClickListener(this);
         view.findViewById(R.id.defect_icon).setOnClickListener(this);
+        view.findViewById(R.id.play).setOnClickListener(this);
         playerName.setText(String.format(getResources().getString(R.string.welcome), Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName()));
 
         /*Query query = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid());
@@ -106,6 +109,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 gold.setText(R.string.defect_gold);
                 layout.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.defect_big));
                 break;
+            case R.id.play:
+                DynamicToast.makeSuccess(getContext(), "PLAY", Toast.LENGTH_LONG);
+                Intent intent = new Intent(getActivity(), GameActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             default:
                 break;
         }

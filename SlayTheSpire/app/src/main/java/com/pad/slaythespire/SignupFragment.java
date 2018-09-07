@@ -1,6 +1,7 @@
 package com.pad.slaythespire;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -146,6 +147,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             FirebaseUser user = mAuth.getCurrentUser();
                             User data = new User(name, email, password,0.0,0L,1L, "red", true);
                             mDatabase.child("users").child(user.getUid()).setValue(data);
+                            Intent intent = new Intent(getActivity(), Main2Activity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         } else {
                             DynamicToast.makeError(Objects.requireNonNull(getActivity()), getString(R.string.error_firebase), 10).show();
                         }

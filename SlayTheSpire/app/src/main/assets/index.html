@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.2" >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        canvas{
+            padding: 0px;
+        }
+        body{
+            margin:0px;
+        }
+    </style>
+</head>
+
+<body>
+<div >
+    <script src="lib/phaser.min.js"></script>
+    <script src="model/combat.js"></script>
+    <script src="model/player.js"></script>
+    <script src="model/enemy.js"></script>
+    <script src="model/cards.js"></script>
+    <script src="model/enemis.js"></script>
+
+    <script src="model/effects.js"></script>
+    <script src="model/map.js"></script>
+    <script src="view/components/endTurn.js"></script>
+    <script src="view/components/discardDeck.js"></script>
+    <script src="view/components/mainDeck.js"></script>
+    <script src="view/scenes/combat.js"></script>
+    <script src="view/scenes/loseCombat.js"></script>
+    <script src="view/scenes/map.js"></script>
+    <script src="view/components/card.js"></script>
+    <script src="view/components/hpBar.js"></script>
+    <script src="view/components/effects.js"></script>
+    <script src="view/components/entity.js"></script>
+    <script src="view/components/token_map.js"></script>
+
+    <script>
+        var size = (window.devicePixelRatio || 1);
+        console.log(size);
+        var config = {
+            type: Phaser.AUTO,
+            parent: 'phaser-example',
+            width: window.innerWidth*size,
+            height: window.innerHeight*size,
+            scene: [
+                MapScene,
+                CombatScene,
+                LoseCombatScene
+                
+            ]
+        }
+
+        const game = new Phaser.Game(config);
+        var selectedCard;
+        var emmiter;
+        var combat;
+        var render = false;
+        var mapModel = new Map(6);
+        var player = new Player({
+            "hp" : 80,
+            "maxHP" : 80,
+            "mana" : 3,
+            "block" : 2,
+            "strength" : 2,
+            "startCombatEffects" : [],
+            "startTurnEffects" : [],
+            "playCardEffects" : [],
+
+            "endTurnEffects" : [new discardHandEffect()],
+
+            "receiveAttackEffects" : [],
+        });
+        var hand = [twinStrike, wildStrike, bloodletting, combust];
+        var ending;
+        var tweenEnding;
+        var endResult;
+    </script>
+</div>
+</body>
+
+</html>
